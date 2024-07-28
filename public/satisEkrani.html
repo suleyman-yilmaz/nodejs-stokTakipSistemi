@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Satış Ekranı - Stok Takip Sistemi</title>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .card-body {
+            background-color: #ffffff;
+        }
+
+        .form-group input,
+        .form-group button {
+            height: 50px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+
+        .form-group input,
+        .form-group button {
+            width: 100%;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+        .navbar {
+            background-color: #007cf9;
+            padding: 0.5rem 1rem;
+            height: 100px;
+            line-height: 100px;
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+        }
+        .nav-link {
+            transition: color 0.2s ease-in-out;
+        }
+        .nav-link:hover {
+            color: #000000 !important;
+        }
+        .navbar-nav {
+            flex: 1;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/anaSayfa">Ana Sayfa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/anlikStok">Anlık Stok</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/urunGirisi">Ürün Girişi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cikisiYapilanUrunler">Çıkışı Yapılan Ürünler</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/satisEkrani">Satış Ekranı</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/urunBilgiGiris">Ürün Bilgi Girişi</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="text-center mb-4">Satış İşlemleri</h1>
+        <div class="card">
+            <div class="card-header">
+                Satış Bilgileri
+            </div>
+            <div class="card-body">
+                <form id="salesForm">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <input type="text" id="barcode" class="form-control" placeholder="Barkod No" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="number" id="quantity" class="form-control" placeholder="Satış Miktarı" step="any" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="number" step="0.01" id="price" class="form-control" placeholder="Satış Fiyatı" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="text" id="totalAmount" class="form-control" placeholder="Toplam Tutar" readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="date" id="saleDate" class="form-control" placeholder="Satış Tarihi" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <textarea id="description" class="form-control" placeholder="Açıklama" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <button type="submit" class="btn btn-primary btn-block">Ekle</button>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <button type="button" class="btn btn-danger btn-block">Sil</button>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <button type="button" class="btn btn-warning btn-block">Satış İptal</button>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <button type="button" class="btn btn-success btn-block">Satış Yap</button>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <button type="button" class="btn btn-info btn-block">Fiyat Ver</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Ürün Listesi
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Barkod No</th>
+                            <th>Ürün Adı</th>
+                            <th>Satış Miktar</th>
+                            <th>Birimi</th>
+                            <th>Satış Fiyatı</th>
+                            <th>Toplam Tutar</th>
+                            <th>Satış Tarihi</th>
+                            <th>Açıklama</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="items">
+                        <!-- Ürün listesi burada görüntülenecek -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('quantity').addEventListener('input', calculateTotal);
+        document.getElementById('price').addEventListener('input', calculateTotal);
+
+        function calculateTotal() {
+            var quantity = parseFloat(document.getElementById('quantity').value) || 0;
+            var price = parseFloat(document.getElementById('price').value) || 0;
+            var totalAmount = document.getElementById('totalAmount');
+
+            if (quantity > 0 && price > 0) {
+                totalAmount.value = (quantity * price).toFixed(2);
+            } else {
+                totalAmount.value = '';
+            }
+        }
+    </script>
+</body>
+
+</html>
