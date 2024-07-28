@@ -1,2 +1,3 @@
 # Node.js Stok Takip Sistemi
 ### bu proje henüz geliştirilme aşamasındadır proje tamamlanınca gerekli açıklamalar eklenecektir.
+#### projeyi bilgisayarınıza indirdikten sonra eğer bilgisayarınızda nodejs ve nodemon eklentisi kuruluysa terminale (cmd) ekranına 'nodemon app.js' yazarak projeyi  http://localhost:3000 portunda çalıştırabilirsiniz ve tarayıcınızdan bu porta giderek projeyi test edebilirsiniz.
