@@ -403,7 +403,12 @@
                     cancelButtonText: 'Hayır, iptal et'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        fetch('/api/urunler/sepet/satisIptal', { method: 'DELETE' })
+                        fetch('/api/urunler1/sepet/satisiptal', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
                             .then(response => response.json())
                             .then(() => {
                                 Swal.fire({
@@ -414,10 +419,12 @@
                                 loadItems(); // Sepetteki ürünleri yeniden yükleyin
                             })
                             .catch(error => console.error('Silme işlemi sırasında bir hata oluştu:', error));
-                            
+
                     }
                 });
             });
+
+            
 
 
             document.addEventListener('DOMContentLoaded', () => {

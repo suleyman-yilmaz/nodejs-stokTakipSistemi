@@ -244,15 +244,17 @@ app.put('/api/urunler/sepet/:sepetID', (req, res) => {
 
 
 // sepet tüm ürünleri silme işlemi
-app.delete('/api/urunler/sepet/satisIptal', (req, res) => {
+app.delete('/api/urunler1/sepet/satisiptal', (req, res) => {
     db.run('DELETE FROM sepet', function (err) {
         if (err) {
-            console.error('Veritabanı hatası:', err.message);
-            return res.status(500).json({ error: 'Veritabanı hatası' });
+            console.error('Veritabani hatasi:', err.message);
+            return res.status(500).json({ error: 'Veritabani hatasi' });
         }
-        res.json({ message: 'Sepetteki tüm ürünler kaldırıldı' });
+        res.json({ message: 'Sepetteki tüm ürünler kaldirildi' });
     });
 });
+
+
 
 app.listen(port, () => {
     console.log(`Sunucu http://localhost:${port} adresinde çalışıyor`);
