@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <title>Satış Ekranı - Stok Takip Sistemi</title>
 
     <style>
@@ -52,25 +53,32 @@
         .btn-block {
             width: 100%;
         }
+
         .navbar {
             background-color: #007cf9;
             padding: 0.5rem 1rem;
             height: 100px;
             line-height: 100px;
         }
-        .navbar-brand, .nav-link {
+
+        .navbar-brand,
+        .nav-link {
             color: #ffffff !important;
         }
+
         .nav-link {
             transition: color 0.2s ease-in-out;
         }
+
         .nav-link:hover {
             color: #000000 !important;
         }
+
         .navbar-nav {
             flex: 1;
             justify-content: center;
         }
+
         .table th,
         .table td {
             text-align: center;
@@ -109,7 +117,7 @@
     </nav>
 
     <div class="container">
-        <h1 class="text-center mb-4">Satış İşlemleri</h1>
+        <h1 class="text-center mb-4" id="ubg">Satış İşlemleri</h1>
         <div class="card">
             <div class="card-header">
                 Satış Bilgileri
@@ -121,13 +129,16 @@
                             <input type="text" id="barcode" class="form-control" placeholder="Barkod No" required>
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="number" id="quantity" class="form-control" placeholder="Satış Miktarı" step="any" required>
+                            <input type="number" id="quantity" class="form-control" placeholder="Satış Miktarı"
+                                step="any" required>
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="number" step="0.01" id="price" class="form-control" placeholder="Satış Fiyatı" required>
+                            <input type="number" step="0.01" id="price" class="form-control" placeholder="Satış Fiyatı"
+                                required>
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="text" id="totalAmount" class="form-control" placeholder="Toplam Tutar" readonly>
+                            <input type="text" id="totalAmount" class="form-control" placeholder="Toplam Tutar"
+                                readonly>
                         </div>
                         <div class="form-group col-md-4">
                             <input type="date" id="saleDate" class="form-control" placeholder="Satış Tarihi" required>
@@ -138,10 +149,11 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <button type="submit" class="btn btn-primary btn-block">Sepete Ekle</button>
+                            <button type="submit" class="btn btn-primary btn-block" id="addButton">Sepete Ekle</button>
                         </div>
                         <div class="form-group col-md-3">
-                            <button type="button" class="btn btn-danger btn-block">Satış İptal</button>
+                            <button type="button" class="btn btn-danger btn-block" id="clearBin">Satış
+                                İptal</button>
                         </div>
                         <div class="form-group col-md-3">
                             <button type="button" class="btn btn-success btn-block">Satış Yap</button>
@@ -180,25 +192,238 @@
             </div>
         </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        document.getElementById('quantity').addEventListener('input', calculateTotal);
-        document.getElementById('price').addEventListener('input', calculateTotal);
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-        function calculateTotal() {
-            var quantity = parseFloat(document.getElementById('quantity').value) || 0;
-            var price = parseFloat(document.getElementById('price').value) || 0;
-            var totalAmount = document.getElementById('totalAmount');
+        <script>
+            document.getElementById('quantity').addEventListener('input', calculateTotal);
+            document.getElementById('price').addEventListener('input', calculateTotal);
 
-            if (quantity > 0 && price > 0) {
-                totalAmount.value = (quantity * price).toFixed(2);
-            } else {
-                totalAmount.value = '';
+            function calculateTotal() {
+                var quantity = parseFloat(document.getElementById('quantity').value) || 0;
+                var price = parseFloat(document.getElementById('price').value) || 0;
+                var totalAmount = document.getElementById('totalAmount');
+
+                if (quantity > 0 && price > 0) {
+                    totalAmount.value = (quantity * price).toFixed(2);
+                } else {
+                    totalAmount.value = '';
+                }
             }
-        }
-    </script>
+
+            function loadItems() {
+                fetch('/api/urunler/sepet')
+                    .then(response => response.json())
+                    .then(data => {
+                        const itemsContainer = document.getElementById('items');
+                        itemsContainer.innerHTML = '';
+                        data.forEach(urun => {
+                            const row = document.createElement('tr');
+                            row.dataset.sepetID = urun.sepetID; // sepetID'yi satırın veri kümesine ekle
+
+                            const barkodnoCell = document.createElement('td');
+                            barkodnoCell.textContent = urun.barkodno || 'Bilinmiyor';
+                            row.appendChild(barkodnoCell);
+
+                            const ürünadıCell = document.createElement('td');
+                            ürünadıCell.textContent = urun.urunAdi || 'Bilinmiyor';
+                            row.appendChild(ürünadıCell);
+
+                            const satisMiktariCell = document.createElement('td');
+                            satisMiktariCell.textContent = urun.satisAdeti || 'Bilinmiyor';
+                            row.appendChild(satisMiktariCell);
+
+                            const birimiCell = document.createElement('td');
+                            birimiCell.textContent = urun.birimi || 'Bilinmiyor';
+                            row.appendChild(birimiCell);
+
+                            const satisFiyatıCell = document.createElement('td');
+                            satisFiyatıCell.textContent = urun.satisFiyati || 'Bilinmiyor';
+                            row.appendChild(satisFiyatıCell);
+
+                            const toplamTutarCell = document.createElement('td');
+                            toplamTutarCell.textContent = urun.toplamTutari || 'Bilinmiyor';
+                            row.appendChild(toplamTutarCell);
+
+                            const cikisTarihiCell = document.createElement('td');
+                            cikisTarihiCell.textContent = urun.cikisTarihi || 'Bilinmiyor';
+                            row.appendChild(cikisTarihiCell);
+
+                            const aciklamaCell = document.createElement('td');
+                            aciklamaCell.textContent = urun.aciklama || 'Bilinmiyor';
+                            row.appendChild(aciklamaCell);
+
+                            const actionCell = document.createElement('td');
+                            const deleteButton = document.createElement('button');
+                            deleteButton.textContent = 'Sil';
+                            deleteButton.className = 'btn btn-danger btn-sm';
+                            deleteButton.addEventListener('click', () => {
+                                const sepetID = row.dataset.sepetID; // girenID'yi satırdan al
+                                Swal.fire({
+                                    title: 'Emin misiniz?',
+                                    text: 'Bu ürünü silmek istediğinizden emin misiniz?',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Evet, sil!',
+                                    cancelButtonText: 'Hayır, iptal et'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        fetch(`/api/urunler/sepet/${sepetID}`, { method: 'DELETE' })
+                                            .then(response => response.json())
+                                            .then(() => {
+                                                row.remove();
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Silindi!',
+                                                    text: 'Ürün başarıyla silindi.'
+                                                });
+                                            })
+                                            .catch(error => console.error('Silme işlemi sırasında bir hata oluştu:', error));
+                                    }
+                                });
+                            });
+
+                            const editButton = document.createElement('button');
+                            editButton.textContent = 'Düzenle';
+                            editButton.className = 'btn btn-warning btn-sm';
+                            editButton.addEventListener('click', () => {
+                                document.getElementById('ubg').scrollIntoView({ behavior: 'smooth' });
+                                document.getElementById('barcode').value = urun.barkodno;
+                                document.getElementById('quantity').value = urun.satisAdeti;
+                                document.getElementById('price').value = urun.satisFiyati;
+                                document.getElementById('totalAmount').value = urun.toplamTutari;
+                                document.getElementById('saleDate').value = urun.cikisTarihi;
+                                document.getElementById('description').value = urun.aciklama;
+                                document.getElementById('barcode').setAttribute('readonly', true);
+                                const addButton = document.getElementById('addButton');
+                                addButton.textContent = 'Güncelle';
+                                addButton.style.backgroundColor = '#ffc107';
+                                addButton.style.borderColor = '#ffc107';
+                                addButton.classList.remove('btn-primary');
+                                addButton.classList.add('btn-warning');
+                                document.getElementById('salesForm').setAttribute('data-editing', urun.sepetID); // sepetID'yi data-editing attribute'unda sakla
+                            });
+
+                            actionCell.appendChild(deleteButton);
+                            actionCell.appendChild(editButton);
+                            row.appendChild(actionCell);
+
+                            itemsContainer.appendChild(row);
+                        });
+                    })
+                    .catch(error => console.error('Ürünleri yüklerken bir hata oluştu:', error));
+            }
+
+
+            // sepete ürün ekleme işlemler
+            document.getElementById('salesForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const barcode = document.getElementById('barcode').value.trim();
+                const quantity = document.getElementById('quantity').value.trim();
+                const price = parseFloat(document.getElementById('price').value.trim());
+                const totalAmount = parseFloat(document.getElementById('totalAmount').value.trim());
+                const saleDate = document.getElementById('saleDate').value.trim();
+                const description = document.getElementById('description').value.trim();
+
+                if (!barcode || !quantity || !price || !totalAmount || !saleDate || !description) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata',
+                        text: 'Ürün bilgilerini eksiksiz giriniz.'
+                    });
+                    return;
+                }
+
+                const editingBarkod = document.getElementById('salesForm').getAttribute('data-editing');
+
+                if (editingBarkod) {
+                    fetch(`/api/urunler/sepet/${editingBarkod}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ barkodno: barcode, satisAdet: quantity, satisFiyati: price, toplamTutar: totalAmount, cikisTarihi: saleDate, aciklama: description })
+                    })
+                        .then(response => response.json())
+                        .then(() => {
+                            document.getElementById('salesForm').removeAttribute('data-editing');
+                            document.getElementById('barcode').removeAttribute('readonly');
+                            const addButton = document.getElementById('addButton');
+                            addButton.textContent = 'Ekle';
+                            addButton.style.backgroundColor = '#007bff';
+                            addButton.style.borderColor = '#007bff';
+                            addButton.classList.remove('btn-warning');
+                            addButton.classList.add('btn-primary');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı',
+                                text: 'Ürün başarıyla güncellendi.'
+                            });
+                            loadItems();
+                            document.getElementById('salesForm').reset();
+                        })
+                        .catch(error => console.error('Güncelleme işlemi sırasında bir hata oluştu:', error));
+                } else {
+                    fetch('/api/urunler/sepet', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ sBarkodNo: barcode, satisAdet: quantity, satisFiyati: price, toplamTutar: totalAmount, cikisTarihi: saleDate, aciklama: description })
+                    })
+                        .then(response => response.json())
+                        .then(() => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı',
+                                text: 'Ürün başarıyla eklendi.'
+                            });
+                            document.getElementById('salesForm').reset();
+                            loadItems();
+                        })
+                        .catch(error => console.error('Ekleme işlemi sırasında bir hata oluştu:', error));
+                }
+            });
+
+
+            // sepeti temizleme işlemleri
+            document.getElementById('clearBin').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: 'Sepetteki tüm ürünleri kaldırmak istediğinizden emin misiniz?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Evet, kaldır!',
+                    cancelButtonText: 'Hayır, iptal et'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('/api/urunler/sepet/satisIptal', { method: 'DELETE' })
+                            .then(response => response.json())
+                            .then(() => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Başarılı',
+                                    text: 'Sepetteki tüm ürünler kaldırıldı.'
+                                });
+                                loadItems(); // Sepetteki ürünleri yeniden yükleyin
+                            })
+                            .catch(error => console.error('Silme işlemi sırasında bir hata oluştu:', error));
+                            
+                    }
+                });
+            });
+
+
+            document.addEventListener('DOMContentLoaded', () => {
+                loadItems();
+            });
+        </script>
 </body>
 
 </html>

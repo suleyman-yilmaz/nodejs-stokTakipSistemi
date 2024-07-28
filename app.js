@@ -24,12 +24,12 @@ app.get('/anaSayfa', (req, res) => {
 });
 
 //Anlık Stok sayfası
-app.get('/anlikStok', (req, res)=>{
+app.get('/anlikStok', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'anlikStok.html'));
 });
 
 // Ürün girişi sayfası
-app.get('/urunGirisi', (req, res)=>{
+app.get('/urunGirisi', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'urunGirisi.html'));
 });
 
@@ -44,7 +44,7 @@ app.get('/satisEkrani', (req, res) => {
 });
 
 // Ürün bilgi giriş sayfası
-app.get('/urunBilgiGiris', (req, res)=>{
+app.get('/urunBilgiGiris', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'urunBilgiGiris.html'));
 });
 
@@ -181,6 +181,78 @@ app.put('/api/urunler/giren/:girenID', (req, res) => {
 });
 
 
+// sepet listele
+app.get('/api/urunler/sepet', (req, res) => {
+    db.all('SELECT * FROM vw_sepet ORDER BY barkodno', (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        res.json(rows);
+    });
+});
+
+
+// sepete urun ekle
+app.post('/api/urunler/sepet', (req, res) => {
+    const { sBarkodNo, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama } = req.body;
+
+    // Gelen verileri kontrol et
+    console.log('Gelen veri:', { sBarkodNo, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama });
+
+    if (!sBarkodNo || !satisAdet || !satisFiyati || !toplamTutar || !cikisTarihi || !aciklama) {
+        return res.status(400).json({ error: 'Eksik veri' });
+    }
+
+    db.run('INSERT INTO sepet (sBarkodNo, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama) VALUES (?, ?, ?, ?, ?, ?)', [sBarkodNo, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama], function (err) {
+        if (err) {
+            console.error('Veritabanı hatası:', err.message);
+            return res.status(500).json({ error: 'Veritabanı hatası' });
+        }
+        res.json({ id: this.lastID });
+    });
+});
+
+// sepet ürün silme işlemi
+app.delete('/api/urunler/sepet/:sepetID', (req, res) => {
+    const sepetID = req.params.sepetID;
+    db.run('DELETE FROM sepet WHERE sepetID = ?', sepetID, function (err) {
+        if (err) {
+            console.error('Veritabanı hatası:', err.message);
+            return res.status(500).json({ error: 'Veritabanı hatası' });
+        }
+        if (this.changes === 0) {
+            return res.status(404).json({ error: 'Ürün bulunamadı' });
+        }
+        res.json({ message: 'Ürün başarıyla silindi' });
+    });
+});
+
+// sepet ürün düzenleme işlemleri
+app.put('/api/urunler/sepet/:sepetID', (req, res) => {
+    const { sepetID } = req.params;
+    const { barkodno, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama } = req.body;
+    const sql = 'UPDATE sepet SET sBarkodNo = ?, satisAdet = ?, satisFiyati = ?, toplamTutar = ?, cikisTarihi = ?, aciklama = ? WHERE sepetID = ?';
+    db.run(sql, [barkodno, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama, sepetID], function (err) {
+        if (err) {
+            console.log('Hata:', err.message);
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json({ changes: this.changes });
+    });
+});
+
+
+// sepet tüm ürünleri silme işlemi
+app.delete('/api/urunler/sepet/satisIptal', (req, res) => {
+    db.run('DELETE FROM sepet', function (err) {
+        if (err) {
+            console.error('Veritabanı hatası:', err.message);
+            return res.status(500).json({ error: 'Veritabanı hatası' });
+        }
+        res.json({ message: 'Sepetteki tüm ürünler kaldırıldı' });
+    });
+});
 
 app.listen(port, () => {
     console.log(`Sunucu http://localhost:${port} adresinde çalışıyor`);
