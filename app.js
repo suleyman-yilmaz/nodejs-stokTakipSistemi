@@ -37,13 +37,8 @@ app.get('/urunGirisi', (req, res) => {
 });
 
 // Çıkışı yapılan ürünler sayfası
-app.get('/cikisiYapilanUrunler', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'cikisiYapilanUrunler.html'));
-});
-
-// Satış ekranı sayfası
-app.get('/satisEkrani', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'satisEkrani.html'));
+app.get('/urunCikisi', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'urunCikisi.html'));
 });
 
 // Ürün bilgi giriş sayfası
@@ -54,6 +49,11 @@ app.get('/urunBilgiGiris', (req, res) => {
 // ürün giris sorgulama işlemleri sayfası
 app.get('/girisUrunSorgulama', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'girisiYapilanUrunleriSorgulama.html'));
+});
+
+// ürün çıkış sorgulama işlemleri sayfası
+app.get('/urunCikisSorgulama', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'urunCikisSorgulama.html'));
 });
 
 // anlık stok listele
