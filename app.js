@@ -302,6 +302,22 @@ app.get('/api/urunler/cikan', (req, res) => {
     });
 });
 
+// Çıkışı yapılan ürünler silme işlemi
+app.delete('/api/urunler/cikan/:cUrunID', (req, res) => {
+    const cUrunID = req.params.cUrunID;
+    db.run('DELETE FROM cikanUrun WHERE cUrunID = ?', cUrunID, function (err) {
+        if (err) {
+            console.error('Veritabanı hatası:', err.message);
+            return res.status(500).json({ error: 'Veritabanı hatası' });
+        }
+        if (this.changes === 0) {
+            return res.status(404).json({ error: 'Ürün bulunamadı' });
+        }
+        res.json({ message: 'Ürün başarıyla silindi' });
+    });
+});
+
+
 app.listen(port, () => {
     console.log(`Sunucu http://localhost:${port} adresinde çalışıyor`);
 });
