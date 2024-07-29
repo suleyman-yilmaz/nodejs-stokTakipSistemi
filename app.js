@@ -250,26 +250,6 @@ app.get('/api/urungirisi/sorgu', (req, res) => {
 });
 
 
-// sepete urun ekle
-// app.post('/api/urunler/sepet', (req, res) => {
-//     const { sBarkodNo, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama } = req.body;
-
-//     // Gelen verileri kontrol et
-//     console.log('Gelen veri:', { sBarkodNo, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama });
-
-//     if (!sBarkodNo || !satisAdet || !satisFiyati || !toplamTutar || !cikisTarihi || !aciklama) {
-//         return res.status(400).json({ error: 'Eksik veri' });
-//     }
-
-//     db.run('INSERT INTO sepet (sBarkodNo, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama) VALUES (?, ?, ?, ?, ?, ?)', [sBarkodNo, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama], function (err) {
-//         if (err) {
-//             console.error('Veritabanı hatası:', err.message);
-//             return res.status(500).json({ error: 'Veritabanı hatası' });
-//         }
-//         res.json({ id: this.lastID });
-//     });
-// });
-
 // Çıkışı yapılan ürünler listele
 app.get('/api/urunler/cikan', (req, res) => {
     db.all('SELECT * FROM vw_urunCikisi ORDER BY barkodno', (err, rows) => {
