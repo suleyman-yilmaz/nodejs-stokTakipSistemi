@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const exceljs = require('exceljs');
+const fs = require('fs');
+
 
 const app = express();
 const port = 3000;
@@ -316,6 +319,43 @@ app.delete('/api/urunler/cikan/:cUrunID', (req, res) => {
         res.json({ message: 'Ürün başarıyla silindi' });
     });
 });
+
+
+// excel dosyasına aktar
+app.get('/api/excel/export', async (req, res) => {
+    try {
+        const filePath = path.join(__dirname, 'satis.xlsx');
+
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).json({ error: 'Excel dosyası bulunamadı.' });
+        }
+
+        const workbook = new exceljs.Workbook();
+        await workbook.xlsx.readFile(filePath);
+        const worksheet = workbook.getWorksheet('Sayfa1');
+
+        const rows = [];
+        worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber === 1) return;
+
+            const [ urunAdi, satisMiktar, birimi, satisFiyati, toplamTutar] = row.values;
+
+            rows.push({
+                urunAdi,
+                satisMiktar,
+                birimi,
+                satisFiyati,
+                toplamTutar
+            });
+        });
+
+        res.json({ message: 'Veriler başarıyla aktarıldı.' });
+    } catch (err) {
+        console.error('Hata:', err);
+        res.status(500).json({ error: 'İşlem sırasında hata oluştu.' });
+    }
+});
+
 
 
 app.listen(port, () => {

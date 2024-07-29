@@ -161,7 +161,7 @@
                                 Yap</button>
                         </div>
                         <div class="form-group col-md-3">
-                            <button type="button" class="btn btn-info btn-block">Fiyat Ver</button>
+                            <button type="button" class="btn btn-info btn-block" id="exportExcel">Fiyat Ver</button>
                         </div>
                     </div>
                 </form>
@@ -466,7 +466,24 @@
                 }
             });
 
-            
+
+            // Excel'e aktar butonu
+            document.getElementById('exportExcel').addEventListener('click', () => {
+                fetch('/api/excel/export', {
+                    method: 'GET'
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Başarılı',
+                            text: data.message
+                        });
+                    })
+                    .catch(error => console.error('Excel dosyası oluşturulurken bir hata oluştu:', error));
+            });
+
+
             document.addEventListener('DOMContentLoaded', () => {
                 loadItems();
             });
