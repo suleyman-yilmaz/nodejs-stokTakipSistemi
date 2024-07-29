@@ -114,7 +114,8 @@
                             <input type="text" id="purchasePrice" class="form-control" placeholder="Birimi" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <button type="button" id="searchButton" class="btn btn-primary btn-block">Sorgula</button><br>
+                            <button type="button" id="searchButton"
+                                class="btn btn-primary btn-block">Sorgula</button><br>
                             <button type="button" id="listButton" class="btn btn-primary btn-block"
                                 onclick="loadItems()">Listele</button>
                             <a href="/urunCikisi" class="btn btn-primary btn-block">Ürün Çıkış İşlemleri</a>
@@ -124,7 +125,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="uListe">
             <div class="card-header">
                 Ürün Listesi
             </div>
@@ -298,6 +299,9 @@
                                 row.appendChild(aciklamaCell);
                                 itemsContainer.appendChild(row);
                             });
+
+                            document.getElementById('uListe').scrollIntoView({ behavior: 'smooth' });
+
                         } else {
                             Swal.fire({
                                 icon: 'info',

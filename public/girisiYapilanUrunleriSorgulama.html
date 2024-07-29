@@ -168,53 +168,53 @@
                         itemsContainer.innerHTML = '';
                         data.forEach(urun => {
                             const row = document.createElement('tr');
-                            row.dataset.girenId = urun.girenID; // girenID'yi satırın veri kümesine ekle
-
+                            row.dataset.girenId = urun.girenID;
+        
                             const barkodnoCell = document.createElement('td');
                             barkodnoCell.textContent = urun.barkodno || 'Bilinmiyor';
                             row.appendChild(barkodnoCell);
-
+        
                             const ürünadıCell = document.createElement('td');
                             ürünadıCell.textContent = urun.urunAdi || 'Bilinmiyor';
                             row.appendChild(ürünadıCell);
-
+        
                             const girenMiktarCell = document.createElement('td');
                             girenMiktarCell.textContent = urun.girenMiktar || 'Bilinmiyor';
                             row.appendChild(girenMiktarCell);
-
+        
                             const birimiCell = document.createElement('td');
                             birimiCell.textContent = urun.birimi || 'Bilinmiyor';
                             row.appendChild(birimiCell);
-
+        
                             const alışFiyatıCell = document.createElement('td');
                             alışFiyatıCell.textContent = urun.alisFiyati || 'Bilinmiyor';
                             row.appendChild(alışFiyatıCell);
-
+        
                             const toplamTutarCell = document.createElement('td');
                             toplamTutarCell.textContent = urun.toplamTutar || 'Bilinmiyor';
                             row.appendChild(toplamTutarCell);
-
+        
                             const girişTarihiCell = document.createElement('td');
                             girişTarihiCell.textContent = urun.girisTarihi || 'Bilinmiyor';
                             row.appendChild(girişTarihiCell);
-
+        
                             const firmaCell = document.createElement('td');
                             firmaCell.textContent = urun.firma || 'Bilinmiyor';
                             row.appendChild(firmaCell);
-
+        
                             itemsContainer.appendChild(row);
                         });
                     })
                     .catch(error => console.error('Ürünleri yüklerken bir hata oluştu:', error));
             }
-
+        
             loadItems();
-
+        
             document.getElementById('searchButton').addEventListener('click', () => {
                 const barcode = document.getElementById('barcode').value.trim();
                 const urunAdi = document.getElementById('quantity').value.trim();
                 const birimi = document.getElementById('purchasePrice').value.trim();
-
+        
                 if (!barcode && !urunAdi && !birimi) {
                     Swal.fire({
                         icon: 'warning',
@@ -223,15 +223,15 @@
                     });
                     return;
                 }
-
+        
                 let queryParam = barcode ? `barcode=${barcode}` : urunAdi ? `urunAdi=${urunAdi}` : `birimi=${birimi}`;
-
+        
                 fetch(`/api/urungirisi/sorgu?${queryParam}`)
                     .then(response => response.json())
                     .then(data => {
                         const itemsContainer = document.getElementById('items');
                         itemsContainer.innerHTML = '';
-
+        
                         if (data.length > 0) {
                             data.forEach(urun => {
                                 const row = document.createElement('tr');
@@ -243,7 +243,7 @@
                                 const toplamTutarCell = document.createElement('td');
                                 const girisTarihiCell = document.createElement('td');
                                 const firmaCell = document.createElement('td');
-
+        
                                 barkodnoCell.textContent = urun.barkodno || '0';
                                 ürünadıCell.textContent = urun.urunAdi || '0';
                                 girenMiktarCell.textContent = urun.girenMiktar || '0';
@@ -252,8 +252,7 @@
                                 toplamTutarCell.textContent = urun.toplamTutar || '0';
                                 girisTarihiCell.textContent = urun.girisTarihi || '0';
                                 firmaCell.textContent = urun.firma || '0';
-
-
+        
                                 row.appendChild(barkodnoCell);
                                 row.appendChild(ürünadıCell);
                                 row.appendChild(girenMiktarCell);
@@ -264,6 +263,10 @@
                                 row.appendChild(firmaCell);
                                 itemsContainer.appendChild(row);
                             });
+        
+                            // Yönlendirme işlemi
+                            document.getElementById('uListe').scrollIntoView({ behavior: 'smooth' });
+        
                         } else {
                             Swal.fire({
                                 icon: 'info',
@@ -281,36 +284,38 @@
                         });
                     });
             });
-
+        
             document.getElementById('listButton').addEventListener('click', () => {
                 loadItems();
                 document.getElementById('barcode').value = '';
                 document.getElementById('quantity').value = '';
                 document.getElementById('purchasePrice').value = '';
             });
-
+        
             // barkoda tıklanınca ürün adı ve birim alanlarını temizle
             document.getElementById('barcode').addEventListener('click', () => {
                 document.getElementById('quantity').value = '';
                 document.getElementById('purchasePrice').value = '';
             });
-
+        
             // ürün adına tıklanınca barkod ve birim alanlarını temizle
             document.getElementById('quantity').addEventListener('click', () => {
                 document.getElementById('barcode').value = '';
                 document.getElementById('purchasePrice').value = '';
             });
-
+        
             // birime tıklanınca barkod ve ürün adı alanlarını temizle
             document.getElementById('purchasePrice').addEventListener('click', () => {
                 document.getElementById('barcode').value = '';
                 document.getElementById('quantity').value = '';
             });
-
+        
             document.addEventListener('DOMContentLoaded', () => {
                 loadItems();
             });
         </script>
+        
+        
 </body>
 
 </html>

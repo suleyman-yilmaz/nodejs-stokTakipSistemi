@@ -19,10 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // Ana sayfa
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'anaSayfa.html'));
-});
-app.get('/anaSayfa', (req, res) => {
+app.get(['/', '/anaSayfa'], (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'anaSayfa.html'));
 });
 
@@ -342,6 +339,10 @@ app.get('/api/uruncikisi/sorgu', (req, res) => {
     }
 });
 
+// 404 sayfası
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+});
 
 app.listen(port, () => {
     console.log(`Sunucu http://localhost:${port} adresinde çalışıyor`);
