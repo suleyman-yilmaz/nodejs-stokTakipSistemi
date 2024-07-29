@@ -7,6 +7,7 @@
     <title>Anlık Stok - Stok Takip Sistemi</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.3/sweetalert2.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -58,10 +59,11 @@
         .nav-link:hover {
             color: #000000 !important;
         }
-        
+
         .table tbody tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
         .table th,
         .table td {
             text-align: center;
@@ -101,7 +103,8 @@
 
     <div class="container">
         <h1 class="text-center mb-4">Anlık Stok Görüntüleme ve Sorgulama İşlemleri</h1>
-            <h6 class="text-center mb-4" style="color: rgb(255, 0, 0);">UYARI: Sorgulama işlemi yaparken lütfen tüm değerleri doldurmayınız!!! Sadece 1 değere göre sorgulama yapılmaktadır. </h6>
+        <h6 class="text-center mb-4" style="color: rgb(255, 0, 0);">UYARI: Sorgulama işlemi yaparken lütfen tüm
+            değerleri doldurmayınız!!! Sadece 1 değere göre sorgulama yapılmaktadır. </h6>
         <div class="card">
             <div class="card-header">
                 Ürün Bilgilerine Göre Sorgulama İşlemleri
@@ -110,16 +113,17 @@
                 <form id="itemForm">
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <input type="text" id="barcode" class="form-control" placeholder="Barkod No" required>
+                            <input type="text" id="barcode" class="form-control" placeholder="Barkod No">
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="text" id="quantity" class="form-control" placeholder="Ürün Adı" required>
+                            <input type="text" id="quantity" class="form-control" placeholder="Ürün Adı">
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="text" id="purchasePrice" class="form-control" placeholder="Birimi" required>
+                            <input type="text" id="purchasePrice" class="form-control" placeholder="Birimi">
                         </div>
                         <div class="form-group col-md-12">
-                            <button type="button" id="addButton" class="btn btn-primary btn-block">Sorgula</button><br>
+                            <button type="button" id="searchButton"
+                                class="btn btn-primary btn-block">Sorgula</button><br>
                             <button type="button" id="listButton" class="btn btn-primary btn-block"
                                 onclick="loadItems()">Listele</button>
                         </div>
@@ -151,13 +155,11 @@
             </div>
         </div>
 
-
-
         <!-- Bootstrap JS, Popper.js, and jQuery -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.3/sweetalert2.min.js"></script>
 
         <script>
             function loadItems() {
@@ -191,8 +193,97 @@
                             itemsContainer.appendChild(row);
                         });
                     });
-                // yukarıdaki işlemler ürün bilgileri listeler
             }
+
+            document.getElementById('searchButton').addEventListener('click', () => {
+                const barcode = document.getElementById('barcode').value.trim();
+                const urunAdi = document.getElementById('quantity').value.trim();
+                const birimi = document.getElementById('purchasePrice').value.trim();
+
+                if (!barcode && !urunAdi && !birimi) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Bilgi Eksik',
+                        text: 'En az bir alanı doldurmalısınız!',
+                    });
+                    return;
+                }
+
+                let queryParam = barcode ? `barcode=${barcode}` : urunAdi ? `urunAdi=${urunAdi}` : `birimi=${birimi}`;
+
+                fetch(`/api/anlik/sorgu?${queryParam}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const itemsContainer = document.getElementById('items');
+                        itemsContainer.innerHTML = '';
+
+                        if (data.length > 0) {
+                            data.forEach(urun => {
+                                const row = document.createElement('tr');
+                                const barkodnoCell = document.createElement('td');
+                                const ürünadıCell = document.createElement('td');
+                                const birimiCell = document.createElement('td');
+                                const girenMiktarCell = document.createElement('td');
+                                const cikanMiktarCell = document.createElement('td');
+                                const mevcutMiktarCell = document.createElement('td');
+
+                                barkodnoCell.textContent = urun.barkodno || '0';
+                                ürünadıCell.textContent = urun.urunAdi || '0';
+                                birimiCell.textContent = urun.birimi || '0';
+                                girenMiktarCell.textContent = urun.girenMiktar || '0';
+                                cikanMiktarCell.textContent = urun.cikanMiktar || '0';
+                                mevcutMiktarCell.textContent = urun.mevcutMiktar || '0';
+
+                                row.appendChild(barkodnoCell);
+                                row.appendChild(ürünadıCell);
+                                row.appendChild(birimiCell);
+                                row.appendChild(girenMiktarCell);
+                                row.appendChild(cikanMiktarCell);
+                                row.appendChild(mevcutMiktarCell);
+                                itemsContainer.appendChild(row);
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Ürün Bulunamadı',
+                                text: 'Girilen bilgiye ait ürün bulunamadı.',
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata',
+                            text: 'Bir hata oluştu, ürün bilgisi bulunamadı.',
+                        });
+                    });
+            });
+
+            document.getElementById('listButton').addEventListener('click', () => {
+                loadItems();
+                document.getElementById('barcode').value = '';
+                document.getElementById('quantity').value = '';
+                document.getElementById('purchasePrice').value = '';
+            });
+
+            // barkoda tıklanınca ürün adı ve birim alanlarını temizle
+            document.getElementById('barcode').addEventListener('click', () => {
+                document.getElementById('quantity').value = '';
+                document.getElementById('purchasePrice').value = '';
+            });
+
+            // ürün adına tıklanınca barkod ve birim alanlarını temizle
+            document.getElementById('quantity').addEventListener('click', () => {
+                document.getElementById('barcode').value = '';
+                document.getElementById('purchasePrice').value = '';
+            });
+
+            // birime tıklanınca barkod ve ürün adı alanlarını temizle
+            document.getElementById('purchasePrice').addEventListener('click', () => {
+                document.getElementById('barcode').value = '';
+                document.getElementById('quantity').value = '';
+            });
 
             document.addEventListener('DOMContentLoaded', () => {
                 loadItems();

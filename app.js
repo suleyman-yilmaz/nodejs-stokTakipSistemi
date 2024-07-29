@@ -62,6 +62,37 @@ app.get('/api/anlik', (req, res) => {
     });
 });
 
+app.get('/api/anlik/sorgu', (req, res) => {
+    const { barcode, urunAdi, birimi } = req.query;
+
+    if (barcode) {
+        db.get('SELECT * FROM vw_anlik WHERE barkodno = ?', [barcode], (err, row) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(row ? [row] : []);
+        });
+    } else if (urunAdi) {
+        db.all('SELECT * FROM vw_anlik WHERE urunAdi LIKE ?', [`%${urunAdi}%`], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(rows);
+        });
+    } else if (birimi) {
+        db.all('SELECT * FROM vw_anlik WHERE birimi LIKE ?', [`%${birimi}%`], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(rows);
+        });
+    } else {
+        res.status(400).json({ error: 'En az bir sorgu parametresi sağlanmalıdır: barcode, urunAdi, birimi' });
+    }
+});
+
+
+
 // Ürünleri bilgi listele
 app.get('/api/urunler', (req, res) => {
     db.all('SELECT * FROM urun ORDER BY barkodno', (err, rows) => {

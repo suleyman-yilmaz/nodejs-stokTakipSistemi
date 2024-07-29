@@ -472,8 +472,12 @@
                 fetch('/api/excel/export', {
                     method: 'GET'
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        console.log('API Yanıtı:', response);
+                        return response.json();
+                    })
                     .then(data => {
+                        console.log('Veri:', data);
                         Swal.fire({
                             icon: 'success',
                             title: 'Başarılı',
@@ -482,6 +486,7 @@
                     })
                     .catch(error => console.error('Excel dosyası oluşturulurken bir hata oluştu:', error));
             });
+
 
 
             document.addEventListener('DOMContentLoaded', () => {
