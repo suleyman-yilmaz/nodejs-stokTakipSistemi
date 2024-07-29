@@ -51,6 +51,10 @@ app.get('/urunBilgiGiris', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'urunBilgiGiris.html'));
 });
 
+// ürün giris sorgulama işlemleri sayfası
+app.get('/girisUrunSorgulama', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'girisiYapilanUrunleriSorgulama.html'));
+});
 
 // anlık stok listele
 app.get('/api/anlik', (req, res) => {
@@ -214,6 +218,36 @@ app.put('/api/urunler/giren/:girenID', (req, res) => {
     });
 });
 
+
+// ürün girişi sorgula
+app.get('/api/urungirisi/sorgu', (req, res) => {
+    const { barcode, urunAdi, birimi } = req.query;
+
+    if (barcode) {
+        db.all('SELECT * FROM vw_urunGirisi WHERE barkodno = ?', [barcode], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(rows)
+        });
+    } else if (urunAdi) {
+        db.all('SELECT * FROM vw_urunGirisi WHERE urunAdi LIKE ?', [`%${urunAdi}%`], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(rows);
+        });
+    } else if (birimi) {
+        db.all('SELECT * FROM vw_urunGirisi WHERE birimi LIKE ?', [`%${birimi}%`], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(rows);
+        });
+    } else {
+        res.status(400).json({ error: 'En az bir sorgu parametresi sağlanmalıdır: barcode, urunAdi, birimi' });
+    }
+});
 
 // sepet listele
 app.get('/api/urunler/sepet', (req, res) => {

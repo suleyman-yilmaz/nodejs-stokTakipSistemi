@@ -102,7 +102,7 @@
     </nav>
 
     <div class="container">
-        <h1 class="text-center mb-4">Anlık Stok Görüntüleme ve Sorgulama İşlemleri</h1>
+        <h1 class="text-center mb-4">Ürün Girişi Sorgulama İşlemleri</h1>
         <div class="card">
             <div class="card-header">
                 Ürün Bilgilerine Göre Sorgulama İşlemleri
@@ -123,14 +123,15 @@
                             <button type="button" id="searchButton"
                                 class="btn btn-primary btn-block">Sorgula</button><br>
                             <button type="button" id="listButton" class="btn btn-primary btn-block"
-                                onclick="loadItems()">Listele</button>
+                                onclick="loadItems()">Listele</button><br>
+                            <a href="/urunGirisi" class="btn btn-primary btn-block">Ürün Giriş İşlemleri</a>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="uListe">
             <div class="card-header">
                 Ürün Listesi
             </div>
@@ -140,10 +141,12 @@
                         <tr>
                             <th>Barkod No</th>
                             <th>Ürün Adı</th>
-                            <th>Birimi</th>
                             <th>Giren Miktar</th>
-                            <th>Çıkan Miktar</th>
-                            <th>Mevcut Miktar</th>
+                            <th>Birimi</th>
+                            <th>Alış Fiyatı</th>
+                            <th>Toplam Tutar</th>
+                            <th>Giriş Tarihi</th>
+                            <th>Firma</th>
                         </tr>
                     </thead>
                     <tbody id="items">
@@ -161,37 +164,54 @@
 
         <script>
             function loadItems() {
-                fetch('/api/anlik')
+                fetch('/api/urunler/giren')
                     .then(response => response.json())
                     .then(data => {
                         const itemsContainer = document.getElementById('items');
                         itemsContainer.innerHTML = '';
                         data.forEach(urun => {
                             const row = document.createElement('tr');
+                            row.dataset.girenId = urun.girenID; // girenID'yi satırın veri kümesine ekle
+
                             const barkodnoCell = document.createElement('td');
-                            const ürünadıCell = document.createElement('td');
-                            const birimiCell = document.createElement('td');
-                            const girenMiktarCell = document.createElement('td');
-                            const cikanMiktarCell = document.createElement('td');
-                            const mevcutMiktarCell = document.createElement('td');
-
-                            barkodnoCell.textContent = urun.barkodno || '0';
-                            ürünadıCell.textContent = urun.urunAdi || '0';
-                            birimiCell.textContent = urun.birimi || '0';
-                            girenMiktarCell.textContent = urun.girenMiktar || '0';
-                            cikanMiktarCell.textContent = urun.cikanMiktar || '0';
-                            mevcutMiktarCell.textContent = urun.mevcutMiktar || '0';
-
+                            barkodnoCell.textContent = urun.barkodno || 'Bilinmiyor';
                             row.appendChild(barkodnoCell);
+
+                            const ürünadıCell = document.createElement('td');
+                            ürünadıCell.textContent = urun.urunAdi || 'Bilinmiyor';
                             row.appendChild(ürünadıCell);
-                            row.appendChild(birimiCell);
+
+                            const girenMiktarCell = document.createElement('td');
+                            girenMiktarCell.textContent = urun.girenMiktar || 'Bilinmiyor';
                             row.appendChild(girenMiktarCell);
-                            row.appendChild(cikanMiktarCell);
-                            row.appendChild(mevcutMiktarCell);
+
+                            const birimiCell = document.createElement('td');
+                            birimiCell.textContent = urun.birimi || 'Bilinmiyor';
+                            row.appendChild(birimiCell);
+
+                            const alışFiyatıCell = document.createElement('td');
+                            alışFiyatıCell.textContent = urun.alisFiyati || 'Bilinmiyor';
+                            row.appendChild(alışFiyatıCell);
+
+                            const toplamTutarCell = document.createElement('td');
+                            toplamTutarCell.textContent = urun.toplamTutar || 'Bilinmiyor';
+                            row.appendChild(toplamTutarCell);
+
+                            const girişTarihiCell = document.createElement('td');
+                            girişTarihiCell.textContent = urun.girisTarihi || 'Bilinmiyor';
+                            row.appendChild(girişTarihiCell);
+
+                            const firmaCell = document.createElement('td');
+                            firmaCell.textContent = urun.firma || 'Bilinmiyor';
+                            row.appendChild(firmaCell);
+
                             itemsContainer.appendChild(row);
                         });
-                    });
+                    })
+                    .catch(error => console.error('Ürünleri yüklerken bir hata oluştu:', error));
             }
+
+            loadItems();
 
             document.getElementById('searchButton').addEventListener('click', () => {
                 const barcode = document.getElementById('barcode').value.trim();
@@ -209,7 +229,7 @@
 
                 let queryParam = barcode ? `barcode=${barcode}` : urunAdi ? `urunAdi=${urunAdi}` : `birimi=${birimi}`;
 
-                fetch(`/api/anlik/sorgu?${queryParam}`)
+                fetch(`/api/urungirisi/sorgu?${queryParam}`)
                     .then(response => response.json())
                     .then(data => {
                         const itemsContainer = document.getElementById('items');
@@ -220,24 +240,31 @@
                                 const row = document.createElement('tr');
                                 const barkodnoCell = document.createElement('td');
                                 const ürünadıCell = document.createElement('td');
-                                const birimiCell = document.createElement('td');
                                 const girenMiktarCell = document.createElement('td');
-                                const cikanMiktarCell = document.createElement('td');
-                                const mevcutMiktarCell = document.createElement('td');
+                                const birimiCell = document.createElement('td');
+                                const alisFiyatiCell = document.createElement('td');
+                                const toplamTutarCell = document.createElement('td');
+                                const girisTarihiCell = document.createElement('td');
+                                const firmaCell = document.createElement('td');
 
                                 barkodnoCell.textContent = urun.barkodno || '0';
                                 ürünadıCell.textContent = urun.urunAdi || '0';
-                                birimiCell.textContent = urun.birimi || '0';
                                 girenMiktarCell.textContent = urun.girenMiktar || '0';
-                                cikanMiktarCell.textContent = urun.cikanMiktar || '0';
-                                mevcutMiktarCell.textContent = urun.mevcutMiktar || '0';
+                                birimiCell.textContent = urun.birimi || '0';
+                                alisFiyatiCell.textContent = urun.alisFiyati || '0';
+                                toplamTutarCell.textContent = urun.toplamTutar || '0';
+                                girisTarihiCell.textContent = urun.girisTarihi || '0';
+                                firmaCell.textContent = urun.firma || '0';
+
 
                                 row.appendChild(barkodnoCell);
                                 row.appendChild(ürünadıCell);
-                                row.appendChild(birimiCell);
                                 row.appendChild(girenMiktarCell);
-                                row.appendChild(cikanMiktarCell);
-                                row.appendChild(mevcutMiktarCell);
+                                row.appendChild(birimiCell);
+                                row.appendChild(alisFiyatiCell);
+                                row.appendChild(toplamTutarCell);
+                                row.appendChild(girisTarihiCell);
+                                row.appendChild(firmaCell);
                                 itemsContainer.appendChild(row);
                             });
                         } else {
