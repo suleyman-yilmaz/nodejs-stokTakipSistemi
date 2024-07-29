@@ -292,6 +292,15 @@ app.post('/api/productsclear/sepet/satis', (req, res) => {
     });
 });
 
+// Çıkışı yapılan ürünler listele
+app.get('/api/urunler/cikan', (req, res) => {
+    db.all('SELECT * FROM vw_urunCikisi ORDER BY barkodno', (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        res.json(rows);
+    });
+});
 
 app.listen(port, () => {
     console.log(`Sunucu http://localhost:${port} adresinde çalışıyor`);
