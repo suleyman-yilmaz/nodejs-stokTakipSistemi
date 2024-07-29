@@ -244,7 +244,7 @@ app.put('/api/urunler/sepet/:sepetID', (req, res) => {
 
 
 // sepet tüm ürünleri silme işlemi
-app.delete('/api/urunler1/sepet/satisiptal', (req, res) => {
+app.delete('/api/products/sepet/satisiptal', (req, res) => {
     db.run('DELETE FROM sepet', function (err) {
         if (err) {
             console.error('Veritabani hatasi:', err.message);
@@ -254,6 +254,43 @@ app.delete('/api/urunler1/sepet/satisiptal', (req, res) => {
     });
 });
 
+
+//sepetteki ürünlerin satisini yap
+app.post('/api/productsclear/sepet/satis', (req, res) => {
+    db.all('SELECT * FROM sepet', (err, rows) => {
+        if (err) {
+            console.error('Veritabanı hatası:', err.message);
+            return res.status(500).json({ error: 'Veritabanı hatası' });
+        }
+        if (rows.length === 0) {
+            return res.status(400).json({ error: 'Sepet boş' });
+        }
+
+        const insertQuery = 'INSERT INTO cikanUrun (cBarkodNo, cikanMiktar, satisFiyati, toplamTutar, cikisTarihi, aciklama) VALUES (?, ?, ?, ?, ?, ?)';
+        const deleteQuery = 'DELETE FROM sepet';
+
+        db.serialize(() => {
+            db.run('BEGIN TRANSACTION');
+            rows.forEach(row => {
+                const { sBarkodNo, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama } = row;
+                db.run(insertQuery, [sBarkodNo, satisAdet, satisFiyati, toplamTutar, cikisTarihi, aciklama], function (err) {
+                    if (err) {
+                        console.error('Veritabanı hatası:', err.message);
+                        return res.status(500).json({ error: 'Veritabanı hatası' });
+                    }
+                });
+            });
+            db.run(deleteQuery, function (err) {
+                if (err) {
+                    console.error('Veritabanı hatası:', err.message);
+                    return res.status(500).json({ error: 'Veritabanı hatası' });
+                }
+                db.run('COMMIT');
+                res.json({ message: 'Ürünler başarıyla satıldı ve sepet boşaltıldı' });
+            });
+        });
+    });
+});
 
 
 app.listen(port, () => {
