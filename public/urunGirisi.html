@@ -133,7 +133,7 @@
                 </form>
             </div>
         </div>
-        <div class="card" id="uListe">
+        <div class="card">
             <div class="card-header">
                 Ürün Listesi
             </div>
@@ -332,7 +332,6 @@
                                 });
                                 loadItems();
                                 document.getElementById('itemForm').reset();
-                                document.getElementById('uListe').scrollIntoView({ behavior: 'smooth' });
                             })
                             .catch(error => console.error('Güncelleme işlemi sırasında bir hata oluştu:', error));
                     } else {
@@ -352,7 +351,6 @@
                                 });
                                 document.getElementById('itemForm').reset();
                                 loadItems();
-                                document.getElementById('uListe').scrollIntoView({ behavior: 'smooth' });
                             })
                             .catch(error => console.error('Ekleme işlemi sırasında bir hata oluştu:', error));
                     }

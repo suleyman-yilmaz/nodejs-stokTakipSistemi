@@ -126,11 +126,11 @@
                             <input type="text" id="barcode" class="form-control" placeholder="Barkod No" required>
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="number" id="quantity" class="form-control" placeholder="Satış Miktarı"
+                            <input type="number" id="quantity" class="form-control" placeholder="Çıkış Miktarı"
                                 step="any" required>
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="number" step="0.01" id="price" class="form-control" placeholder="Satış Fiyatı"
+                            <input type="number" step="0.01" id="price" class="form-control" placeholder="Çıkış Fiyatı"
                                 required>
                         </div>
                         <div class="form-group col-md-4">
@@ -138,7 +138,7 @@
                                 readonly>
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="date" id="saleDate" class="form-control" placeholder="Satış Tarihi" required>
+                            <input type="date" id="saleDate" class="form-control" placeholder="Çıkış Tarihi" required>
                         </div>
                         <div class="form-group col-md-4">
                             <textarea id="description" class="form-control" placeholder="Açıklama" rows="3"></textarea>
@@ -164,11 +164,11 @@
                         <tr>
                             <th>Barkod No</th>
                             <th>Ürün Adı</th>
-                            <th>Satış Miktar</th>
+                            <th>Çıkış Miktarı</th>
                             <th>Birimi</th>
-                            <th>Satış Fiyatı</th>
+                            <th>Çıkış Fiyatı</th>
                             <th>Toplam Tutar</th>
-                            <th>Satış Tarihi</th>
+                            <th>Çıkış Tarihi</th>
                             <th>Açıklama</th>
                             <th>İşlemler</th>
                         </tr>
@@ -281,7 +281,7 @@
                             editButton.addEventListener('click', () => {
                                 document.getElementById('ubg').scrollIntoView({ behavior: 'smooth' });
                                 document.getElementById('barcode').value = urun.barkodno;
-                                document.getElementById('quantity').value = urun.satisMiktari;
+                                document.getElementById('quantity').value = urun.cikanMiktar;
                                 document.getElementById('price').value = urun.satisFiyati;
                                 document.getElementById('totalAmount').value = urun.toplamTutar;
                                 document.getElementById('saleDate').value = urun.cikisTarihi;
@@ -293,7 +293,7 @@
                                 addButton.style.borderColor = '#ffc107';
                                 addButton.classList.remove('btn-primary');
                                 addButton.classList.add('btn-warning');
-                                document.getElementById('itemForm').setAttribute('data-editing', urun.girenID); // girenID'yi data-editing attribute'unda sakla
+                                document.getElementById('salesForm').setAttribute('data-editing', urun.cUrunID); // cUrunID'yi data-editing attribute'unda sakla
                             });
 
                             actionCell.appendChild(deleteButton);
@@ -306,7 +306,7 @@
                     .catch(error => console.error('Ürünleri yüklerken bir hata oluştu:', error));
             }
 
-            // sepete ürün ekleme işlemler
+            // ürün çıkışı yapma
             document.getElementById('salesForm').addEventListener('submit', (e) => {
                 e.preventDefault();
                 const barcode = document.getElementById('barcode').value.trim();
@@ -324,8 +324,56 @@
                     });
                     return;
                 }
-            });
+                const editingBarkod = document.getElementById('salesForm').getAttribute('data-editing');
 
+                if (editingBarkod) {
+                    fetch(`/api/urunler/cikan/${editingBarkod}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ barkodno: barcode, cikanMiktar: quantity, satisFiyati: price, toplamTutar: totalAmount, cikisTarihi: saleDate, aciklama: description })
+                    })
+                        .then(response => response.json())
+                        .then(() => {
+                            document.getElementById('salesForm').removeAttribute('data-editing');
+                            document.getElementById('barcode').removeAttribute('readonly');
+                            const addButton = document.getElementById('addButton');
+                            addButton.textContent = 'Ekle';
+                            addButton.style.backgroundColor = '#007bff';
+                            addButton.style.borderColor = '#007bff';
+                            addButton.classList.remove('btn-warning');
+                            addButton.classList.add('btn-primary');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı',
+                                text: 'Ürün başarıyla güncellendi.'
+                            });
+                            loadItems();
+                            document.getElementById('salesForm').reset();
+                        })
+                        .catch(error => console.error('Güncelleme işlemi sırasında bir hata oluştu:', error));
+                } else {
+                    fetch('/api/urunler/cikan', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ cBarkodNo: barcode, cikanMiktar: quantity, satisFiyati: price, toplamTutar: totalAmount, cikisTarihi: saleDate, aciklama: description })
+                    })
+                        .then(response => response.json())
+                        .then(() => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı',
+                                text: 'Ürün başarıyla eklendi.'
+                            });
+                            loadItems();
+                            document.getElementById('salesForm').reset();
+                        })
+                        .catch(error => console.error('Ekleme işlemi sırasında bir hata oluştu:', error));
+                }
+            });
 
             document.addEventListener('DOMContentLoaded', () => {
                 loadItems();
