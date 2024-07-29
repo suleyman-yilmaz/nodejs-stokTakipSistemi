@@ -99,7 +99,7 @@
     </nav>
 
     <div class="container">
-        <h1 class="text-center mb-4">Ürün Çıkışı Sorgula İşlemleri</h1>
+        <h1 class="text-center mb-4">Ürün Çıkışı Sorgulama İşlemleri</h1>
         <div class="card">
             <div class="card-body">
                 <form id="itemForm">
@@ -114,7 +114,7 @@
                             <input type="text" id="purchasePrice" class="form-control" placeholder="Birimi" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <button type="button" id="addButton" class="btn btn-primary btn-block">Sorgula</button><br>
+                            <button type="button" id="searchButton" class="btn btn-primary btn-block">Sorgula</button><br>
                             <button type="button" id="listButton" class="btn btn-primary btn-block"
                                 onclick="loadItems()">Listele</button>
                             <a href="/urunCikisi" class="btn btn-primary btn-block">Ürün Çıkış İşlemleri</a>
@@ -242,6 +242,104 @@
                     })
                     .catch(error => console.error('Ürünleri yüklerken bir hata oluştu:', error));
             }
+
+
+            document.getElementById('searchButton').addEventListener('click', () => {
+                const barcode = document.getElementById('barcode').value.trim();
+                const urunAdi = document.getElementById('quantity').value.trim();
+                const birimi = document.getElementById('purchasePrice').value.trim();
+
+                if (!barcode && !urunAdi && !birimi) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Bilgi Eksik',
+                        text: 'En az bir alanı doldurmalısınız!',
+                    });
+                    return;
+                }
+
+                let queryParam = barcode ? `barcode=${barcode}` : urunAdi ? `urunAdi=${urunAdi}` : `birimi=${birimi}`;
+
+                fetch(`/api/uruncikisi/sorgu?${queryParam}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const itemsContainer = document.getElementById('items');
+                        itemsContainer.innerHTML = '';
+
+                        if (data.length > 0) {
+                            data.forEach(urun => {
+                                const row = document.createElement('tr');
+                                const barkodnoCell = document.createElement('td');
+                                const ürünadıCell = document.createElement('td');
+                                const cikanMiktariCell = document.createElement('td');
+                                const birimiCell = document.createElement('td');
+                                const satisFiyatiCell = document.createElement('td');
+                                const toplamTutarCell = document.createElement('td');
+                                const cikisTarihiCell = document.createElement('td');
+                                const aciklamaCell = document.createElement('td');
+
+                                barkodnoCell.textContent = urun.barkodno || '0';
+                                ürünadıCell.textContent = urun.urunAdi || '0';
+                                cikanMiktariCell.textContent = urun.cikanMiktar || '0';
+                                birimiCell.textContent = urun.birimi || '0';
+                                satisFiyatiCell.textContent = urun.satisFiyati || '0';
+                                toplamTutarCell.textContent = urun.toplamTutar || '0';
+                                cikisTarihiCell.textContent = urun.cikisTarihi || '0';
+                                aciklamaCell.textContent = urun.aciklama || '0';
+
+
+                                row.appendChild(barkodnoCell);
+                                row.appendChild(ürünadıCell);
+                                row.appendChild(cikanMiktariCell);
+                                row.appendChild(birimiCell);
+                                row.appendChild(satisFiyatiCell);
+                                row.appendChild(toplamTutarCell);
+                                row.appendChild(cikisTarihiCell);
+                                row.appendChild(aciklamaCell);
+                                itemsContainer.appendChild(row);
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Ürün Bulunamadı',
+                                text: 'Girilen bilgiye ait ürün bulunamadı.',
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata',
+                            text: 'Bir hata oluştu, ürün bilgisi bulunamadı.',
+                        });
+                    });
+            });
+
+            document.getElementById('listButton').addEventListener('click', () => {
+                loadItems();
+                document.getElementById('barcode').value = '';
+                document.getElementById('quantity').value = '';
+                document.getElementById('purchasePrice').value = '';
+            });
+
+            // barkoda tıklanınca ürün adı ve birim alanlarını temizle
+            document.getElementById('barcode').addEventListener('click', () => {
+                document.getElementById('quantity').value = '';
+                document.getElementById('purchasePrice').value = '';
+            });
+
+            // ürün adına tıklanınca barkod ve birim alanlarını temizle
+            document.getElementById('quantity').addEventListener('click', () => {
+                document.getElementById('barcode').value = '';
+                document.getElementById('purchasePrice').value = '';
+            });
+
+            // birime tıklanınca barkod ve ürün adı alanlarını temizle
+            document.getElementById('purchasePrice').addEventListener('click', () => {
+                document.getElementById('barcode').value = '';
+                document.getElementById('quantity').value = '';
+            });
 
             document.addEventListener('DOMContentLoaded', () => {
                 loadItems();

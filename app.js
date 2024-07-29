@@ -312,6 +312,36 @@ app.put('/api/urunler/cikan/:cUrunID', (req, res) => {
 });
 
 
+// çıkışı yapılan ürünleri sorgulama
+app.get('/api/uruncikisi/sorgu', (req, res) => {
+    const { barcode, urunAdi, birimi } = req.query;
+
+    if (barcode) {
+        db.all('SELECT * FROM vw_urunCikisi WHERE barkodno = ?', [barcode], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(rows)
+        });
+    } else if (urunAdi) {
+        db.all('SELECT * FROM vw_urunCikisi WHERE urunAdi LIKE ?', [`%${urunAdi}%`], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(rows);
+        });
+    } else if (birimi) {
+        db.all('SELECT * FROM vw_urunCikisi WHERE birimi LIKE ?', [`%${birimi}%`], (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(rows);
+        });
+    } else {
+        res.status(400).json({ error: 'En az bir sorgu parametresi sağlanmalıdır: barcode, urunAdi, birimi' });
+    }
+});
+
 
 app.listen(port, () => {
     console.log(`Sunucu http://localhost:${port} adresinde çalışıyor`);
