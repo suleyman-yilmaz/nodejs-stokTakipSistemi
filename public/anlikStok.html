@@ -101,8 +101,7 @@
 
     <div class="container">
         <h1 class="text-center mb-4">Anlık Stok Görüntüleme ve Sorgulama İşlemleri</h1>
-        <h6 class="text-center mb-4">Eğer Anlık Stok görüntülenmiyorsa "Listele" butonuna basarak Anlık Stok bilgilerini
-            görüntüleyebilirsiniz.</h6>
+            <h6 class="text-center mb-4" style="color: rgb(255, 0, 0);">UYARI: Sorgulama işlemi yaparken lütfen tüm değerleri doldurmayınız!!! Sadece 1 değere göre sorgulama yapılmaktadır. </h6>
         <div class="card">
             <div class="card-header">
                 Ürün Bilgilerine Göre Sorgulama İşlemleri
@@ -120,7 +119,9 @@
                             <input type="text" id="purchasePrice" class="form-control" placeholder="Birimi" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <button type="button" id="addButton" class="btn btn-primary btn-block">Sorgula</button>
+                            <button type="button" id="addButton" class="btn btn-primary btn-block">Sorgula</button><br>
+                            <button type="button" id="listButton" class="btn btn-primary btn-block"
+                                onclick="loadItems()">Listele</button>
                         </div>
                     </div>
                 </form>
