@@ -202,14 +202,14 @@
             }
 
             function loadItems() {
-                fetch('/api/urunler/sepet')
+                fetch('/api/urunler/cikan')
                     .then(response => response.json())
                     .then(data => {
                         const itemsContainer = document.getElementById('items');
                         itemsContainer.innerHTML = '';
                         data.forEach(urun => {
                             const row = document.createElement('tr');
-                            row.dataset.sepetID = urun.sepetID; // sepetID'yi satırın veri kümesine ekle
+                            row.dataset.cUrunID = urun.cUrunID; // cUrunID'yi satırın veri kümesine ekle
 
                             const barkodnoCell = document.createElement('td');
                             barkodnoCell.textContent = urun.barkodno || 'Bilinmiyor';
@@ -219,9 +219,9 @@
                             ürünadıCell.textContent = urun.urunAdi || 'Bilinmiyor';
                             row.appendChild(ürünadıCell);
 
-                            const satisMiktariCell = document.createElement('td');
-                            satisMiktariCell.textContent = urun.satisAdeti || 'Bilinmiyor';
-                            row.appendChild(satisMiktariCell);
+                            const cikanMiktariCell = document.createElement('td');
+                            cikanMiktariCell.textContent = urun.cikanMiktar || 'Bilinmiyor';
+                            row.appendChild(cikanMiktariCell);
 
                             const birimiCell = document.createElement('td');
                             birimiCell.textContent = urun.birimi || 'Bilinmiyor';
@@ -232,7 +232,7 @@
                             row.appendChild(satisFiyatıCell);
 
                             const toplamTutarCell = document.createElement('td');
-                            toplamTutarCell.textContent = urun.toplamTutari || 'Bilinmiyor';
+                            toplamTutarCell.textContent = urun.toplamTutar || 'Bilinmiyor';
                             row.appendChild(toplamTutarCell);
 
                             const cikisTarihiCell = document.createElement('td');
@@ -248,7 +248,8 @@
                             deleteButton.textContent = 'Sil';
                             deleteButton.className = 'btn btn-danger btn-sm';
                             deleteButton.addEventListener('click', () => {
-                                const sepetID = row.dataset.sepetID; // girenID'yi satırdan al
+                                const cUrunID = row.dataset.cUrunID; // cUrunID'yi satırdan al
+                                console.log(cUrunID);
                                 Swal.fire({
                                     title: 'Emin misiniz?',
                                     text: 'Bu ürünü silmek istediğinizden emin misiniz?',
@@ -260,7 +261,7 @@
                                     cancelButtonText: 'Hayır, iptal et'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        fetch(`/api/urunler/sepet/${sepetID}`, { method: 'DELETE' })
+                                        fetch(`/api/urunler/cikan/${cUrunID}`, { method: 'DELETE' })
                                             .then(response => response.json())
                                             .then(() => {
                                                 row.remove();
@@ -274,16 +275,15 @@
                                     }
                                 });
                             });
-
                             const editButton = document.createElement('button');
                             editButton.textContent = 'Düzenle';
                             editButton.className = 'btn btn-warning btn-sm';
                             editButton.addEventListener('click', () => {
                                 document.getElementById('ubg').scrollIntoView({ behavior: 'smooth' });
                                 document.getElementById('barcode').value = urun.barkodno;
-                                document.getElementById('quantity').value = urun.satisAdeti;
+                                document.getElementById('quantity').value = urun.satisMiktari;
                                 document.getElementById('price').value = urun.satisFiyati;
-                                document.getElementById('totalAmount').value = urun.toplamTutari;
+                                document.getElementById('totalAmount').value = urun.toplamTutar;
                                 document.getElementById('saleDate').value = urun.cikisTarihi;
                                 document.getElementById('description').value = urun.aciklama;
                                 document.getElementById('barcode').setAttribute('readonly', true);
@@ -293,7 +293,7 @@
                                 addButton.style.borderColor = '#ffc107';
                                 addButton.classList.remove('btn-primary');
                                 addButton.classList.add('btn-warning');
-                                document.getElementById('salesForm').setAttribute('data-editing', urun.sepetID); // sepetID'yi data-editing attribute'unda sakla
+                                document.getElementById('itemForm').setAttribute('data-editing', urun.girenID); // girenID'yi data-editing attribute'unda sakla
                             });
 
                             actionCell.appendChild(deleteButton);
@@ -305,7 +305,6 @@
                     })
                     .catch(error => console.error('Ürünleri yüklerken bir hata oluştu:', error));
             }
-
 
             // sepete ürün ekleme işlemler
             document.getElementById('salesForm').addEventListener('submit', (e) => {
@@ -325,154 +324,7 @@
                     });
                     return;
                 }
-
-                const editingBarkod = document.getElementById('salesForm').getAttribute('data-editing');
-
-                if (editingBarkod) {
-                    fetch(`/api/urunler/sepet/${editingBarkod}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ barkodno: barcode, satisAdet: quantity, satisFiyati: price, toplamTutar: totalAmount, cikisTarihi: saleDate, aciklama: description })
-                    })
-                        .then(response => response.json())
-                        .then(() => {
-                            document.getElementById('salesForm').removeAttribute('data-editing');
-                            document.getElementById('barcode').removeAttribute('readonly');
-                            const addButton = document.getElementById('addButton');
-                            addButton.textContent = 'Ekle';
-                            addButton.style.backgroundColor = '#007bff';
-                            addButton.style.borderColor = '#007bff';
-                            addButton.classList.remove('btn-warning');
-                            addButton.classList.add('btn-primary');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Başarılı',
-                                text: 'Ürün başarıyla güncellendi.'
-                            });
-                            loadItems();
-                            document.getElementById('salesForm').reset();
-                        })
-                        .catch(error => console.error('Güncelleme işlemi sırasında bir hata oluştu:', error));
-                } else {
-                    fetch('/api/urunler/sepet', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ sBarkodNo: barcode, satisAdet: quantity, satisFiyati: price, toplamTutar: totalAmount, cikisTarihi: saleDate, aciklama: description })
-                    })
-                        .then(response => response.json())
-                        .then(() => {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Başarılı',
-                                text: 'Ürün başarıyla eklendi.'
-                            });
-                            document.getElementById('salesForm').reset();
-                            loadItems();
-                        })
-                        .catch(error => console.error('Ekleme işlemi sırasında bir hata oluştu:', error));
-                }
             });
-
-
-            // sepeti temizleme işlemleri
-            function satisIptal() {
-                document.getElementById('clearBin').addEventListener('click', () => {
-                    Swal.fire({
-                        title: 'Emin misiniz?',
-                        text: 'Sepetteki tüm ürünleri kaldırmak istediğinizden emin misiniz?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Evet, kaldır!',
-                        cancelButtonText: 'Hayır, iptal et'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            fetch('/api/products/sepet/satisiptal', {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => response.json())
-                                .then(() => {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Başarılı',
-                                        text: 'Sepetteki tüm ürünler kaldırıldı.'
-                                    });
-                                    loadItems(); // Sepetteki ürünleri yeniden yükleyin
-                                })
-                                .catch(error => console.error('Silme işlemi sırasında bir hata oluştu:', error));
-
-                        }
-                    });
-                });
-            }
-
-            document.getElementById('satisYapButton').addEventListener('click', function () {
-                const itemsTable = document.getElementById('items');
-                if (itemsTable.children.length === 0) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Uyarı',
-                        text: 'Satış yapabilmek için önce sepete ürün eklemelisiniz.'
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Emin misiniz?',
-                        text: 'Sepetteki tüm ürünlerin satışı yapılacak ve sepetteki ürünlerin çıkışı yapılacak',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Evet, satış yap!',
-                        cancelButtonText: 'Hayır, iptal et'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            fetch('/api/productsclear/sepet/satis', {
-                                method: 'POST'
-                            })
-                                .then(response => response.json())
-                                .then(() => {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Başarılı',
-                                        text: 'Sepetteki tüm ürünlerin satışı başarıyla gerçekleşti.'
-                                    });
-                                    loadItems(); // Sepetteki ürünleri yeniden yükleyin
-                                })
-                                .catch(error => console.error('Silme işlemi sırasında bir hata oluştu:', error));
-                        }
-                    });
-                }
-            });
-
-
-            // Excel'e aktar butonu
-            document.getElementById('exportExcel').addEventListener('click', () => {
-                fetch('/api/excel/export', {
-                    method: 'GET'
-                })
-                    .then(response => {
-                        console.log('API Yanıtı:', response);
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Veri:', data);
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Başarılı',
-                            text: data.message
-                        });
-                    })
-                    .catch(error => console.error('Excel dosyası oluşturulurken bir hata oluştu:', error));
-            });
-
 
 
             document.addEventListener('DOMContentLoaded', () => {
