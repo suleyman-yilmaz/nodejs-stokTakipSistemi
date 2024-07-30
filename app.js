@@ -109,9 +109,6 @@ app.get('/api/urunler', (req, res) => {
 app.post('/api/urunler', (req, res) => {
     const { barkodno, urunAdi, birimi } = req.body;
 
-    // Gelen verileri kontrol et
-    console.log('Gelen veri:', { barkodno, urunAdi, birimi });
-
     if (!barkodno || !urunAdi || !birimi) {
         return res.status(400).json({ error: 'Eksik veri' });
     }
@@ -168,9 +165,6 @@ app.get('/api/urunler/giren', (req, res) => {
 // ürün girişi ekle
 app.post('/api/urunler/giren', (req, res) => {
     const { gBarkodNo, girenMiktar, alisFiyati, toplamTutar, girisTarihi, firma } = req.body;
-
-    // Gelen verileri kontrol et
-    console.log('Gelen veri:', { gBarkodNo, girenMiktar, alisFiyati, toplamTutar, girisTarihi, firma });
 
     if (!gBarkodNo || !girenMiktar || !alisFiyati || !toplamTutar || !girisTarihi || !firma) {
         return res.status(400).json({ error: 'Eksik veri' });
@@ -261,9 +255,6 @@ app.get('/api/urunler/cikan', (req, res) => {
 // ürün çıkışı ekle
 app.post('/api/urunler/cikan', (req, res) => {
     const { cBarkodNo, cikanMiktar, satisFiyati, toplamTutar, cikisTarihi, aciklama } = req.body;
-
-    // Gelen verileri kontrol et
-    console.log('Gelen veri:', { cBarkodNo, cikanMiktar, satisFiyati, toplamTutar, cikisTarihi, aciklama });
 
     if (!cBarkodNo || !cikanMiktar || !satisFiyati || !toplamTutar || !cikisTarihi || !aciklama) {
         return res.status(400).json({ error: 'Eksik veri' });
