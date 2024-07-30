@@ -157,6 +157,38 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.3/sweetalert2.min.js"></script>
 
         <script>
+            function toUpperCaseTurkish(str) {
+                // Normalizasyon yaparak karakterleri uygun şekilde işleyin
+                const normalizedStr = str.normalize('NFD');
+
+                // Türkçe karakterler için özel dönüşüm
+                const turkishUpperCaseMap = {
+                    'ı': 'I', 'i': 'İ', 'ç': 'Ç', 'ş': 'Ş', 'ğ': 'Ğ', 'ö': 'Ö', 'ü': 'Ü'
+                };
+
+                let result = '';
+
+                for (const char of normalizedStr) {
+                    if (turkishUpperCaseMap[char]) {
+                        result += turkishUpperCaseMap[char];
+                    } else {
+                        result += char.toUpperCase();
+                    }
+                }
+
+                return result.normalize('NFC');
+            }
+
+            document.getElementById('quantity').addEventListener('input', (event) => {
+                event.target.value = toUpperCaseTurkish(event.target.value);
+            });
+
+            document.getElementById('purchasePrice').addEventListener('input', (event)=>{
+                event.target.value= toUpperCaseTurkish(event.target.value);
+            });
+
+
+
             function loadItems() {
                 fetch('/api/anlik')
                     .then(response => response.json())
@@ -205,6 +237,7 @@
                 }
 
                 let queryParam = barcode ? `barcode=${barcode}` : urunAdi ? `urunAdi=${urunAdi}` : `birimi=${birimi}`;
+                console.log('Query Parameter:', queryParam);
 
                 fetch(`/api/anlik/sorgu?${queryParam}`)
                     .then(response => response.json())

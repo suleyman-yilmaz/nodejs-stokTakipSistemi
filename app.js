@@ -63,6 +63,7 @@ app.get('/api/anlik', (req, res) => {
     });
 });
 
+// anlık stok sorgulama
 app.get('/api/anlik/sorgu', (req, res) => {
     const { barcode, urunAdi, birimi } = req.query;
 
