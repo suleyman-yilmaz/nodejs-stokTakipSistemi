@@ -105,6 +105,19 @@ app.get('/api/urunler', (req, res) => {
     });
 });
 
+// ürün bilgi eklemeden önce barkod no sorgu işlemleri
+app.get('/api/urunler/:barcode/check', (req, res) => {
+    const barcode = req.params.barcode;
+    db.get('SELECT COUNT(*) AS count FROM urun WHERE barkodno = ?', [barcode], (err, row) => {
+        if (err) {
+            console.error('Barkod kontrolü sırasında bir hata oluştu:', err);
+            res.status(500).json({ error: 'Sunucu hatası' });
+            return;
+        }
+        res.json({ exists: row.count > 0 });
+    });
+});
+
 // Ürün bilgi ekle
 app.post('/api/urunler', (req, res) => {
     const { barkodno, urunAdi, birimi } = req.body;

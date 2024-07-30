@@ -17,6 +17,7 @@
             display: flex;
             flex-direction: column;
             margin: 0;
+            font-family: Arial, sans-serif;
         }
 
         .container {
@@ -70,12 +71,10 @@
 
         /* Navigasyon */
         .navbar {
-            background-color: #007bff;
-        }
-
-        .navbar-nav {
-            flex: 1;
-            justify-content: center;
+            background-color: #007cf9;
+            padding: 0.5rem 1rem;
+            height: 100px;
+            line-height: 100px;
         }
 
         .navbar-brand,
@@ -89,6 +88,11 @@
 
         .nav-link:hover {
             color: #000000 !important;
+        }
+
+        .navbar-nav {
+            flex: 1;
+            justify-content: center;
         }
 
         /* Tablo */
@@ -333,55 +337,70 @@
                         return;
                     }
 
-                    const editingBarkod = document.getElementById('itemForm').getAttribute('data-editing');
+                    // Barkod numarasının zaten mevcut olup olmadığını kontrol et
+                    fetch(`/api/urunler/${barcode}/check`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.exists) {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Hata',
+                                    text: 'Girilen barkod numarası zaten mevcut. Lütfen farklı bir barkod numarası giriniz.'
+                                });
+                                return;
+                            }
 
-                    if (editingBarkod) {
-                        fetch(`/api/urunler/${editingBarkod}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ urunAdi: name, birimi: unitOf })
+                            const editingBarkod = document.getElementById('itemForm').getAttribute('data-editing');
+
+                            if (editingBarkod) {
+                                fetch(`/api/urunler/${editingBarkod}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ urunAdi: name, birimi: unitOf })
+                                })
+                                    .then(response => response.json())
+                                    .then(() => {
+                                        document.getElementById('itemForm').removeAttribute('data-editing');
+                                        document.getElementById('barcode').removeAttribute('readonly');
+                                        const addButton = document.getElementById('addButton');
+                                        addButton.textContent = 'Ekle';
+                                        addButton.style.backgroundColor = '#007bff';
+                                        addButton.style.borderColor = '#007bff';
+                                        addButton.classList.remove('btn-warning');
+                                        addButton.classList.add('btn-primary');
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Başarılı',
+                                            text: 'Ürün başarıyla güncellendi.'
+                                        });
+                                        loadItems();
+                                        document.getElementById('itemForm').reset();
+                                    })
+                                    .catch(error => console.error('Güncelleme işlemi sırasında bir hata oluştu:', error));
+                            } else {
+                                fetch('/api/urunler', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ barkodno: barcode, urunAdi: name, birimi: unitOf })
+                                })
+                                    .then(response => response.json())
+                                    .then(() => {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Başarılı',
+                                            text: 'Ürün başarıyla eklendi.'
+                                        });
+                                        loadItems();
+                                        document.getElementById('itemForm').reset();
+                                    })
+                                    .catch(error => console.error('Ekleme işlemi sırasında bir hata oluştu:', error));
+                            }
                         })
-                            .then(response => response.json())
-                            .then(() => {
-                                document.getElementById('itemForm').removeAttribute('data-editing');
-                                document.getElementById('barcode').removeAttribute('readonly');
-                                const addButton = document.getElementById('addButton');
-                                addButton.textContent = 'Ekle';
-                                addButton.style.backgroundColor = '#007bff';
-                                addButton.style.borderColor = '#007bff';
-                                addButton.classList.remove('btn-warning');
-                                addButton.classList.add('btn-primary');
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Başarılı',
-                                    text: 'Ürün başarıyla güncellendi.'
-                                });
-                                loadItems();
-                                document.getElementById('itemForm').reset();
-                            })
-                            .catch(error => console.error('Güncelleme işlemi sırasında bir hata oluştu:', error));
-                    } else {
-                        fetch('/api/urunler', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ barkodno: barcode, urunAdi: name, birimi: unitOf })
-                        })
-                            .then(response => response.json())
-                            .then(() => {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Başarılı',
-                                    text: 'Ürün başarıyla eklendi.'
-                                });
-                                loadItems();
-                                document.getElementById('itemForm').reset();
-                            })
-                            .catch(error => console.error('Ekleme işlemi sırasında bir hata oluştu:', error));
-                    }
+                        .catch(error => console.error('Barkod kontrolü sırasında bir hata oluştu:', error));
                 });
             });
         </script>

@@ -1,58 +1,117 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ana Sayfa - Stok Takip Sistemi</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
         .navbar {
             background-color: #007cf9;
             padding: 0.5rem 1rem;
             height: 100px;
             line-height: 100px;
         }
-        .navbar-brand, .nav-link {
+
+        .navbar-brand,
+        .nav-link {
             color: #ffffff !important;
         }
+
         .nav-link {
             transition: color 0.2s ease-in-out;
         }
+
         .nav-link:hover {
             color: #000000 !important;
         }
+
         .navbar-nav {
             flex: 1;
             justify-content: center;
         }
+
         .openVideo {
             position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
         }
+
         .openVideo img {
             width: 100%;
             height: auto;
+            transition: transform 0.3s;
         }
+
+        .openVideo:hover img {
+            transform: scale(1.05);
+        }
+
+        .openVideo:hover {
+            transform: scale(1.02);
+        }
+
         .openVideo .m-widget19__shadow {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            height: 101px;
+            /* Gölgenin yüksekliğini ayarlamak için */
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            text-align: center;
+            padding: 10px 0;
         }
+
+        .m-widget19__content {
+            text-align: center;
+            position: relative;
+            /* Metni gölge içinde konumlandırmak için */
+            top: 50%;
+            /* Yukarıdan ortalamak için */
+            transform: translateY(-50%);
+            /* Ortalamak için */
+        }
+
+        .m-widget19__username {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .m-widget19__time {
+            color: #dddddd;
+        }
+
+        .btn {
+            margin-top: 10px;
+        }
+
         .modal-dialog {
             max-width: 90%;
             width: auto;
         }
+
         .modal-content {
             border: none;
         }
+
         .video-wrapper {
             margin-bottom: 30px;
         }
     </style>
+
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -91,287 +150,67 @@
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunBilgiGiris">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Repeat for additional videos in the upper row -->
+            <!-- Repeat for additional videos -->
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 2 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Bilgisi Nasıl Silinir
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunBilgiGiris">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4 video-wrapper">
-                <!-- Video Card 3 -->
-                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
-                    <div class="m-portlet__head m-portlet__head--fit"></div>
-                    <div class="m-portlet__body" style="padding-bottom:0">
-                        <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
-                                    </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Lower Row of Videos -->
-        <div class="row mt-4">
-            
-            <div class="col-md-4 video-wrapper">
-                <!-- Video Card 4 -->
-                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
-                    <div class="m-portlet__head m-portlet__head--fit"></div>
-                    <div class="m-portlet__body" style="padding-bottom:0">
-                        <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
-                                    </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4 video-wrapper">
-                <!-- Video Card 5 -->
-                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
-                    <div class="m-portlet__head m-portlet__head--fit"></div>
-                    <div class="m-portlet__body" style="padding-bottom:0">
-                        <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
-                                    </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
-                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
-                    <div class="m-portlet__head m-portlet__head--fit"></div>
-                    <div class="m-portlet__body" style="padding-bottom:0">
-                        <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
-                                    </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
-                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
-                    <div class="m-portlet__head m-portlet__head--fit"></div>
-                    <div class="m-portlet__body" style="padding-bottom:0">
-                        <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
-                                    </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
-                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
-                    <div class="m-portlet__head m-portlet__head--fit"></div>
-                    <div class="m-portlet__body" style="padding-bottom:0">
-                        <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
-                                    </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
-                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
-                    <div class="m-portlet__head m-portlet__head--fit"></div>
-                    <div class="m-portlet__body" style="padding-bottom:0">
-                        <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
-                                    </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
-                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
-                    <div class="m-portlet__head m-portlet__head--fit"></div>
-                    <div class="m-portlet__body" style="padding-bottom:0">
-                        <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
-                                    </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -380,27 +219,35 @@
             </div>
 
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Bilgisi Nasıl Düzenlenir
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunBilgiGiris">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -409,27 +256,35 @@
             </div>
 
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Anlık Stok Barkoda Göre Nasıl Sorgulanır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/anlikStok">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Anlık Stok
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -438,27 +293,35 @@
             </div>
 
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">AnlıkStok Ürün Adına Göre Nasıl Sorgulanır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Anlık Stok
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -467,27 +330,35 @@
             </div>
 
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Anlık Stok Birime Göre Nasıl Sorgulanır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/anlikStok">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Anlık Stok
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -496,27 +367,35 @@
             </div>
 
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Girişi Nasıl Yapılır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunGirisi">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Giriş
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -525,27 +404,35 @@
             </div>
 
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Girişi Silme İşlemi Nasıl Yapılır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunGirisi">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Giriş
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -554,27 +441,35 @@
             </div>
 
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Girişi Düzenleme İşlemi Nasıl Yapılır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunGirisi">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Giriş
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -583,27 +478,35 @@
             </div>
 
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Girişi Barkoda Göre Nasıl Sorgulanır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/girisUrunSorgulama">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Giriş
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -612,27 +515,35 @@
             </div>
 
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">ÜrünGirişi ÜrünAdına Göre Nasıl Sorgulanır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/girisUrunSorgulama">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Giriş
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -641,43 +552,277 @@
             </div>
 
             <div class="col-md-4 video-wrapper">
-                <!-- Video Card 6 -->
+                <!-- Video Card -->
                 <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
                     <div class="m-portlet__head m-portlet__head--fit"></div>
                     <div class="m-portlet__body" style="padding-bottom:0">
                         <div class="m-widget19">
-                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo" style="min-height: 286px; cursor: pointer;">
-                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg" alt="Video Thumbnail">
-                                <div class="m-widget19__shadow"></div>
-                            </div>
-                            <div class="m-widget19__content">
-                                <div class="m-widget19__header">
-                                    <div class="m-widget19__info">
-                                        <span class="m-widget19__username">Ürün Bilgi Girişi Nasıl Yapılır ?</span>
-                                        <br>
-                                        <a href="/">
-                                            <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş İşlemleri</span>
-                                        </a>
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Girişi Birimine Göre Nasıl Sorgulanır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/girisUrunSorgulama">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Giriş
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1" class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
-                                        <i class="fa fa-play">Videoyu Aç</i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-4 video-wrapper">
+                <!-- Video Card -->
+                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
+                    <div class="m-portlet__head m-portlet__head--fit"></div>
+                    <div class="m-portlet__body" style="padding-bottom:0">
+                        <div class="m-widget19">
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Çıkışı Nasıl Yapılır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunCikisi">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Çıkış
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 video-wrapper">
+                <!-- Video Card -->
+                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
+                    <div class="m-portlet__head m-portlet__head--fit"></div>
+                    <div class="m-portlet__body" style="padding-bottom:0">
+                        <div class="m-widget19">
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Çıkışı Silme İşlemi Nasıl Yapılır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunCikisi">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Çıkış
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 video-wrapper">
+                <!-- Video Card -->
+                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
+                    <div class="m-portlet__head m-portlet__head--fit"></div>
+                    <div class="m-portlet__body" style="padding-bottom:0">
+                        <div class="m-widget19">
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Çıkışı Düzenleme İşlemi Nasıl Yapılır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunCikisi">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Bilgi Giriş
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 video-wrapper">
+                <!-- Video Card -->
+                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
+                    <div class="m-portlet__head m-portlet__head--fit"></div>
+                    <div class="m-portlet__body" style="padding-bottom:0">
+                        <div class="m-widget19">
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Çıkışı Barkoda Göre Nasıl Sorgulanır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunCikisSorgulama">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Çıkış
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 video-wrapper">
+                <!-- Video Card -->
+                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
+                    <div class="m-portlet__head m-portlet__head--fit"></div>
+                    <div class="m-portlet__body" style="padding-bottom:0">
+                        <div class="m-widget19">
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">ÜrünÇıkışı ÜrünAdına Göre Nasıl Sorgulanır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunCikisSorgulama">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Çıkış
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 video-wrapper">
+                <!-- Video Card -->
+                <div class="m-portlet m-portlet--bordered-semi m-portlet--full-height m-portlet--rounded-force">
+                    <div class="m-portlet__head m-portlet__head--fit"></div>
+                    <div class="m-portlet__body" style="padding-bottom:0">
+                        <div class="m-widget19">
+                            <div data-ytid="cc_thyw3hwc" data-toggle="modal" data-target="#m_modal_1"
+                                class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides openVideo"
+                                style="min-height: 286px; cursor: pointer;">
+                                <img src="https://img.youtube.com/vi/cc_thyw3hwc/maxresdefault.jpg"
+                                    alt="Video Thumbnail">
+                                <div class="m-widget19__shadow">
+                                    <div class="m-widget19__content">
+                                        <div class="m-widget19__header">
+                                            <div class="m-widget19__info">
+                                                <span class="m-widget19__username">Ürün Çıkışı Birimine Göre Nasıl Sorgulanır
+                                                    ?</span>
+                                                <br>
+                                                <a href="/urunCikisSorgulama">
+                                                    <span class="m-widget19__time">Stok Takip Sistemi / Ürün Çıkış
+                                                        İşlemleri</span>
+                                                </a>
+                                            </div>
+                                            <a href="/" data-ytid="cc_thyw3hwc" data-toggle="modal"
+                                                data-target="#m_modal_1"
+                                                class="btn m-btn--pill btn-secondary m-btn m-btn--hover-brand m-btn--custom openVideo">
+                                                <i class="fa fa-play">      Videoyu Aç</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           <!-- yeni video ekleyebilirsin -->
 
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="m_modal_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="m_modal_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <iframe id="videoFrame" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 60vh;"></iframe>
+                    <iframe id="videoFrame" src="" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen style="width: 100%; height: 60vh;"></iframe>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
@@ -691,16 +836,18 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('.openVideo').on('click', function() {
+        $(document).ready(function () {
+            $('.openVideo').on('click', function () {
                 var ytid = $(this).data('ytid');
                 $('#videoFrame').attr('src', 'https://www.youtube.com/embed/' + ytid + '?autoplay=1');
             });
 
-            $('#m_modal_1').on('hide.bs.modal', function() {
+            $('#m_modal_1').on('hide.bs.modal', function () {
                 $('#videoFrame').attr('src', '');
             });
         });
     </script>
+
 </body>
+
 </html>
