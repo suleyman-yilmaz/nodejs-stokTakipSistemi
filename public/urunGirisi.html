@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -34,6 +35,22 @@
         .card-header {
             background-color: #007bff;
             color: white;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header .btn-link {
+            color: #ffffff;
+            margin-left: 10px;
+            font-size: 1.2rem;
+            /* Adjust size if needed */
+        }
+
+        .card-header .btn-link:hover {
+            color: #cccccc;
+            /* Adjust hover color if needed */
         }
 
         .card-body {
@@ -103,7 +120,12 @@
         <h1 class="text-center mb-4" id="ubg">Ürün Giriş İşlemleri</h1>
         <div class="card">
             <div class="card-header">
-                Ürün Ekle
+                <span>Ürün Ekle</span>
+                <div>
+                    <a href="/girisUrunSorgulama" class="btn btn-link p-0" title="Geri Dön">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <form id="itemForm">
@@ -132,7 +154,6 @@
                             <input type="hidden" id="girenIdInput" name="girenId">
                             <button type="submit" id="addButton" class="btn btn-primary btn-block">Giriş
                                 Yap</button><br>
-                            <a href="/girisUrunSorgulama" class="btn btn-primary btn-block">Sorgulama İşlemleri</a>
                         </div>
                     </div>
                 </form>
@@ -192,7 +213,7 @@
                             itemsContainer.innerHTML = '';
                             data.forEach(urun => {
                                 const row = document.createElement('tr');
-                                row.dataset.girenId = urun.girenID; // girenID'yi satırın veri kümesine ekle
+                                row.dataset.girenId = urun.girenID;
 
                                 const barkodnoCell = document.createElement('td');
                                 barkodnoCell.textContent = urun.barkodno || 'Bilinmiyor';
@@ -231,7 +252,7 @@
                                 deleteButton.textContent = 'Sil';
                                 deleteButton.className = 'btn btn-danger btn-sm';
                                 deleteButton.addEventListener('click', () => {
-                                    const girenID = row.dataset.girenId; // girenID'yi satırdan al
+                                    const girenID = row.dataset.girenId;
                                     Swal.fire({
                                         title: 'Emin misiniz?',
                                         text: 'Bu ürünü silmek istediğinizden emin misiniz?',
@@ -276,7 +297,7 @@
                                     addButton.style.borderColor = '#ffc107';
                                     addButton.classList.remove('btn-primary');
                                     addButton.classList.add('btn-warning');
-                                    document.getElementById('itemForm').setAttribute('data-editing', urun.girenID); // girenID'yi data-editing attribute'unda sakla
+                                    document.getElementById('itemForm').setAttribute('data-editing', urun.girenID);
                                 });
 
                                 actionCell.appendChild(deleteButton);
@@ -291,7 +312,6 @@
 
                 loadItems();
 
-                // aşağıdaki işlemler ise ürün ekler ve günceller
                 document.getElementById('itemForm').addEventListener('submit', (e) => {
                     e.preventDefault();
                     const barcode = document.getElementById('barcode').value.trim();
@@ -312,7 +332,40 @@
 
                     const editingBarkod = document.getElementById('itemForm').getAttribute('data-editing');
 
-                    if (editingBarkod) {
+                    if (!editingBarkod) {
+                        // Barkod no yoksa, ürünü kontrol et ve girişi engelle
+                        fetch(`/api/urunler/${barcode}/check`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.exists) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Hata',
+                                        text: 'Bu barkod numarası mevcut değil, lütfen geçerli bir barkod numarası giriniz.'
+                                    });
+                                } else {
+                                    fetch('/api/urunler/giren', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ gBarkodNo: barcode, girenMiktar: quantity, alisFiyati: purchasePrice, toplamTutar: totalAmount, girisTarihi: entryDate, firma: supplier })
+                                    })
+                                        .then(response => response.json())
+                                        .then(() => {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Başarılı',
+                                                text: 'Ürün girişi başarıyla gerçekleşti.'
+                                            });
+                                            loadItems();
+                                            document.getElementById('itemForm').reset();
+                                        })
+                                        .catch(error => console.error('Ekleme işlemi sırasında bir hata oluştu:', error));
+                                }
+                            })
+                            .catch(error => console.error('Barkod numarası kontrolü sırasında bir hata oluştu:', error));
+                    } else {
                         fetch(`/api/urunler/giren/${editingBarkod}`, {
                             method: 'PUT',
                             headers: {
@@ -339,25 +392,6 @@
                                 document.getElementById('itemForm').reset();
                             })
                             .catch(error => console.error('Güncelleme işlemi sırasında bir hata oluştu:', error));
-                    } else {
-                        fetch('/api/urunler/giren', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ gBarkodNo: barcode, girenMiktar: quantity, alisFiyati: purchasePrice, toplamTutar: totalAmount, girisTarihi: entryDate, firma: supplier })
-                        })
-                            .then(response => response.json())
-                            .then(() => {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Başarılı',
-                                    text: 'Ürün başarıyla eklendi.'
-                                });
-                                document.getElementById('itemForm').reset();
-                                loadItems();
-                            })
-                            .catch(error => console.error('Ekleme işlemi sırasında bir hata oluştu:', error));
                     }
                 });
             });

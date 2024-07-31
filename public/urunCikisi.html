@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <title>Ürün Çıkışı - Stok Takip Sistemi</title>
 
     <style>
@@ -25,6 +26,22 @@
         .card-header {
             background-color: #007bff;
             color: white;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header .btn-link {
+            color: #ffffff;
+            margin-left: 10px;
+            font-size: 1.2rem;
+            /* Adjust size if needed */
+        }
+
+        .card-header .btn-link:hover {
+            color: #cccccc;
+            /* Adjust hover color if needed */
         }
 
         .card-body {
@@ -118,7 +135,12 @@
         <h1 class="text-center mb-4" id="ubg">Ürün Çıkış İşlemleri</h1>
         <div class="card">
             <div class="card-header">
-                Ürün Çıkışı
+                <span>Ürün Çıkışı</span>
+                <div>
+                    <a href="/urunCikisSorgulama" class="btn btn-link p-0" title="Geri Dön">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <form id="salesForm">
@@ -148,7 +170,6 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <button type="submit" class="btn btn-primary btn-block" id="addButton">Çıkış Yap</button>
-                            <a href="/urunCikisSorgulama" class="btn btn-primary btn-block">Sorgulama İşlemleri</a>
                         </div>
                     </div>
                 </form>
@@ -327,7 +348,40 @@
                 }
                 const editingBarkod = document.getElementById('salesForm').getAttribute('data-editing');
 
-                if (editingBarkod) {
+                if (!editingBarkod) {
+                    // barkod no yoksa, ürünü kontrol et ve çıkışı engelle
+                    fetch(`/api/urunler/${barcode}/check`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.exists) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Hata',
+                                    text: 'Bu barkod numarası mevcut değil, lütfen geçerli bir barkod numarası giriniz.'
+                                });
+                            } else {
+                                fetch('/api/urunler/cikan', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ cBarkodNo: barcode, cikanMiktar: quantity, satisFiyati: price, toplamTutar: totalAmount, cikisTarihi: saleDate, aciklama: description })
+                                })
+                                    .then(response => response.json())
+                                    .then(() => {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Başarılı',
+                                            text: 'Ürün çıkışı başarıyla gerçekleşti.'
+                                        });
+                                        loadItems();
+                                        document.getElementById('salesForm').reset();
+                                    })
+                                    .catch(error => console.error('Ekleme işlemi sırasında bir hata oluştu:', error));
+                            }
+                        })
+                        .catch(error => console.error('Barkod numarası kontrolü sırasında bir hata oluştu:', error));
+                } else {
                     fetch(`/api/urunler/cikan/${editingBarkod}`, {
                         method: 'PUT',
                         headers: {
@@ -354,28 +408,9 @@
                             document.getElementById('salesForm').reset();
                         })
                         .catch(error => console.error('Güncelleme işlemi sırasında bir hata oluştu:', error));
-                } else {
-                    fetch('/api/urunler/cikan', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ cBarkodNo: barcode, cikanMiktar: quantity, satisFiyati: price, toplamTutar: totalAmount, cikisTarihi: saleDate, aciklama: description })
-                    })
-                        .then(response => response.json())
-                        .then(() => {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Başarılı',
-                                text: 'Ürün başarıyla eklendi.'
-                            });
-                            loadItems();
-                            document.getElementById('salesForm').reset();
-                        })
-                        .catch(error => console.error('Ekleme işlemi sırasında bir hata oluştu:', error));
+
                 }
             });
-
             document.addEventListener('DOMContentLoaded', () => {
                 loadItems();
             });

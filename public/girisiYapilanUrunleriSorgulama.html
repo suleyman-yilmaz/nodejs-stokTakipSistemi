@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.3/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,6 +26,22 @@
         .card-header {
             background-color: #007bff;
             color: white;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header .btn-link {
+            color: #ffffff;
+            margin-left: 10px;
+            font-size: 1.2rem;
+            /* Adjust size if needed */
+        }
+
+        .card-header .btn-link:hover {
+            color: #cccccc;
+            /* Adjust hover color if needed */
         }
 
         .card-body {
@@ -69,6 +86,23 @@
         .table td {
             text-align: center;
         }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-container .btn {
+            width: 48%;
+        }
+
+        .btn-container .btn i {
+            margin-right: 5px;
+        }
     </style>
 </head>
 
@@ -103,7 +137,15 @@
         <h1 class="text-center mb-4">Ürün Girişi Sorgulama İşlemleri</h1>
         <div class="card">
             <div class="card-header">
-                Ürün Bilgilerine Göre Sorgulama İşlemleri
+                <span>Ürün Bilgilerine Göre Sorgulama İşlemleri</span>
+                <div>
+                    <button id="listButton" type="button" class="btn btn-link p-0" onclick="loadItems()" title="Listele">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <a href="/urunGirisi" class="btn btn-link p-0" title="Geri Dön">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <form id="itemForm">
@@ -118,11 +160,7 @@
                             <input type="text" id="purchasePrice" class="form-control" placeholder="Birimi">
                         </div>
                         <div class="form-group col-md-12">
-                            <button type="button" id="searchButton"
-                                class="btn btn-primary btn-block">Sorgula</button><br>
-                            <button type="button" id="listButton" class="btn btn-primary btn-block"
-                                onclick="loadItems()">Listele</button><br>
-                            <a href="/urunGirisi" class="btn btn-primary btn-block">Ürün Giriş İşlemleri</a>
+                            <button type="button" id="searchButton" class="btn btn-primary btn-block">Sorgula</button><br>
                         </div>
                     </div>
                 </form>

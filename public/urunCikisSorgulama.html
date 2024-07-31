@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -25,6 +26,22 @@
         .card-header {
             background-color: #007bff;
             color: white;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header .btn-link {
+            color: #ffffff;
+            margin-left: 10px;
+            font-size: 1.2rem;
+            /* Adjust size if needed */
+        }
+
+        .card-header .btn-link:hover {
+            color: #cccccc;
+            /* Adjust hover color if needed */
         }
 
         .card-body {
@@ -102,6 +119,17 @@
     <div class="container">
         <h1 class="text-center mb-4">Ürün Çıkışı Sorgulama İşlemleri</h1>
         <div class="card">
+            <div class="card-header">
+                <span>Ürün Bilgilerine Göre Sorgulama İşlemleri</span>
+                <div>
+                    <button id="listButton" type="button" class="btn btn-link p-0" onclick="loadItems()" title="Listele">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <a href="/urunCikisi" class="btn btn-link p-0" title="Geri Dön">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
             <div class="card-body">
                 <form id="itemForm">
                     <div class="form-row">
@@ -117,9 +145,6 @@
                         <div class="form-group col-md-12">
                             <button type="button" id="searchButton"
                                 class="btn btn-primary btn-block">Sorgula</button><br>
-                            <button type="button" id="listButton" class="btn btn-primary btn-block"
-                                onclick="loadItems()">Listele</button>
-                            <a href="/urunCikisi" class="btn btn-primary btn-block">Ürün Çıkış İşlemleri</a>
                         </div>
                     </div>
                 </form>
