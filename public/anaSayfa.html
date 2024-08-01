@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ana Sayfa - Stok Takip Sistemi</title>
+    <!-- Faviocon -->
+    <link rel="icon" href="/favicon-32x32.png" type="image/png">
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -112,6 +114,43 @@
 
         .video-wrapper {
             margin-bottom: 30px;
+        }
+
+        .scroll-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            background-color: transparent;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-to-top-btn:hover {
+            opacity: 0.8;
+            animation: bounce 0.6s;
+        }
+
+        /* Animasyon tanımı */
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
         }
     </style>
 
@@ -849,6 +888,8 @@
         </div>
     </div>
 
+    <button id="scrollToTopBtn" class="scroll-to-top-btn">↑</button>
+
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
@@ -862,6 +903,22 @@
 
             $('#m_modal_1').on('hide.bs.modal', function () {
                 $('#videoFrame').attr('src', '');
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 300) {
+                    scrollToTopBtn.style.display = 'block';
+                } else {
+                    scrollToTopBtn.style.display = 'none';
+                }
+            });
+
+            scrollToTopBtn.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
     </script>

@@ -15,6 +15,7 @@
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
     "pdfkit": "^0.15.0",
+    "serve-favicon": "^2.5.0",
     "sqlite3": "^5.1.7"
   }
 }

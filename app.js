@@ -2,8 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-const exceljs = require('exceljs');
-const fs = require('fs');
+const favicon = require('serve-favicon');
 
 
 const app = express();
@@ -13,10 +12,12 @@ const port = 3000;
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'database.db'));
 
 // Middleware
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public'))); // public klasörünü statik olarak sunma
+app.use(express.static(path.join(__dirname, 'logo')));  // logo klasörünü statik olarak sunma
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(favicon(path.join(__dirname,'logo', 'favicon-32x32.png')));
 
 // Ana sayfa
 app.get(['/', '/anaSayfa'], (req, res) => {
