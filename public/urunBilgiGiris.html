@@ -275,13 +275,21 @@
                                         if (result.isConfirmed) {
                                             fetch(`/api/urunler/${urun.barkodno}`, { method: 'DELETE' })
                                                 .then(response => response.json())
-                                                .then(() => {
-                                                    row.remove();
-                                                    Swal.fire({
-                                                        icon: 'success',
-                                                        title: 'Silindi!',
-                                                        text: 'Ürün başarıyla silindi.'
-                                                    });
+                                                .then(data => {
+                                                    if (data.error) {
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: 'Hata',
+                                                            text: data.error
+                                                        });
+                                                    } else {
+                                                        row.remove();
+                                                        Swal.fire({
+                                                            icon: 'success',
+                                                            title: 'Silindi!',
+                                                            text: 'Ürün başarıyla silindi.'
+                                                        });
+                                                    }
                                                 })
                                                 .catch(error => console.error('Silme işlemi sırasında bir hata oluştu:', error));
                                         }
@@ -321,9 +329,6 @@
 
                 loadItems();
 
-                // yukarıdaki işlemler ürün bilgileri listeler
-
-                // aşağıdaki işlemler ise ürün ekler ve günceller
                 document.getElementById('itemForm').addEventListener('submit', (e) => {
                     e.preventDefault();
                     const barcode = document.getElementById('barcode').value.trim();
@@ -342,7 +347,6 @@
                     const editingBarkod = document.getElementById('itemForm').getAttribute('data-editing');
 
                     if (!editingBarkod) {
-                        // Barkod numarasının zaten mevcut olup olmadığını kontrol et
                         fetch(`/api/urunler/${barcode}/check`)
                             .then(response => response.json())
                             .then(data => {
@@ -405,6 +409,7 @@
                 });
             });
         </script>
+
 </body>
 
 </html>

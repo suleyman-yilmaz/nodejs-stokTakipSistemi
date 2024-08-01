@@ -12,12 +12,12 @@ const port = 3000;
 const db = new sqlite3.Database(path.join(__dirname, 'data', 'database.db'));
 
 // Middleware
-app.use(express.static(path.join(__dirname, 'public'))); // public klasörünü statik olarak sunma
-app.use(express.static(path.join(__dirname, 'logo')));  // logo klasörünü statik olarak sunma
+app.use(favicon(path.join(__dirname, 'logo', 'favicon-32x32.png'))); // Favicon middleware
+app.use(express.static(path.join(__dirname, 'public'))); // Public klasörünü statik olarak sunma
+app.use(express.static(path.join(__dirname, 'logo'))); // Logo klasörünü statik olarak sunma
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(favicon(path.join(__dirname,'logo', 'favicon-32x32.png')));
 
 // Ana sayfa
 app.get(['/', '/anaSayfa'], (req, res) => {
@@ -139,17 +139,63 @@ app.post('/api/urunler', (req, res) => {
 // ürün bilgi silme işlemi
 app.delete('/api/urunler/:barkodno', (req, res) => {
     const barkodno = req.params.barkodno;
-    db.run('DELETE FROM urun WHERE barkodno = ?', barkodno, function (err) {
+
+    // Check if the barkodno exists in vw_urunGirisi or vw_urunCikisi tables
+    const checkGirisiSql = 'SELECT COUNT(*) AS count FROM vw_urunGirisi WHERE barkodno = ?';
+    const checkCikisiSql = 'SELECT COUNT(*) AS count FROM vw_urunCikisi WHERE barkodno = ?';
+
+    db.get(checkGirisiSql, [barkodno], (err, girisiRow) => {
         if (err) {
             console.error('Veritabanı hatası:', err.message);
             return res.status(500).json({ error: 'Veritabanı hatası' });
         }
-        if (this.changes === 0) {
-            return res.status(404).json({ error: 'Ürün bulunamadı' });
-        }
-        res.json({ message: 'Ürün başarıyla silindi' });
+
+        db.get(checkCikisiSql, [barkodno], (err, cikisiRow) => {
+            if (err) {
+                console.error('Veritabanı hatası:', err.message);
+                return res.status(500).json({ error: 'Veritabanı hatası' });
+            }
+
+            if (girisiRow.count > 0 && cikisiRow.count > 0) {
+                return res.status(400).json({ error: 'Bu barkod numarasına ait giren ve çıkan ürünler var. Önce diğer kayıtları siliniz.' });
+            } else if (girisiRow.count > 0) {
+                return res.status(400).json({ error: 'Bu barkod numarasına ait giren ürünler var. Önce giren ürün kayıtlarını siliniz.' });
+            } else if (cikisiRow.count > 0) {
+                return res.status(400).json({ error: 'Bu barkod numarasına ait çıkan ürünler var. Önce çıkan ürün kayıtlarını siliniz.' });
+            } else {
+                // Proceed to delete from urun table if no related records found
+                const deleteSql = 'DELETE FROM urun WHERE barkodno = ?';
+                db.run(deleteSql, barkodno, function (err) {
+                    if (err) {
+                        console.error('Veritabanı hatası:', err.message);
+                        return res.status(500).json({ error: 'Veritabanı hatası' });
+                    }
+                    if (this.changes === 0) {
+                        return res.status(404).json({ error: 'Ürün bulunamadı' });
+                    }
+                    res.json({ message: 'Ürün başarıyla silindi' });
+                });
+            }
+        });
     });
 });
+
+
+
+
+// app.delete('/api/urunler/:barkodno', (req, res) => {
+//     const barkodno = req.params.barkodno;
+//     db.run('DELETE FROM urun WHERE barkodno = ?', barkodno, function (err) {
+//         if (err) {
+//             console.error('Veritabanı hatası:', err.message);
+//             return res.status(500).json({ error: 'Veritabanı hatası' });
+//         }
+//         if (this.changes === 0) {
+//             return res.status(404).json({ error: 'Ürün bulunamadı' });
+//         }
+//         res.json({ message: 'Ürün başarıyla silindi' });
+//     });
+// });
 
 // ürün bilgi güncelleme işlemleri
 app.put('/api/urunler/:barkodno', (req, res) => {

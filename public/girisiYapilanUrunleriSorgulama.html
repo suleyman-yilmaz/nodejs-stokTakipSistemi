@@ -302,6 +302,7 @@
                                                     title: 'Silindi!',
                                                     text: 'Ürün başarıyla silindi.'
                                                 });
+                                                document.getElementById('itemForm').reset();
                                             })
                                             .catch(error => console.error('Silme işlemi sırasında bir hata oluştu:', error));
                                     }
@@ -402,6 +403,7 @@
                                                         title: 'Silindi!',
                                                         text: 'Ürün başarıyla silindi.'
                                                     });
+                                                    document.getElementById('itemForm').reset();
                                                 })
                                                 .catch(error => console.error('Silme işlemi sırasında bir hata oluştu:', error));
                                         }
