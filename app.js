@@ -106,6 +106,19 @@ app.get('/api/urunler', (req, res) => {
     });
 });
 
+// ürün bilgi barkod no oluşturma
+app.get('/api/urunler/barkodno', (req, res) => {
+    db.get('SELECT barkodno FROM urun ORDER BY barkodno DESC LIMIT 1', (err, row) => {
+        if (err) {
+            console.error('Veritabanı hatası:', err.message);
+            return res.status(500).json({ error: 'Veritabanı hatası' });
+        }
+        const lastBarkodNo = row ? row.barkodno : 0;
+        const newBarkodNo = lastBarkodNo + 1;
+        res.json({ barkodno: newBarkodNo }); // `barcode` yerine `barkodno`
+    });
+});
+
 // ürün bilgi eklemeden önce barkod no sorgu işlemleri
 app.get('/api/urunler/:barcode/check', (req, res) => {
     const barcode = req.params.barcode;
