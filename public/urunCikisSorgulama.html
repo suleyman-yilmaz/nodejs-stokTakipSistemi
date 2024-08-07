@@ -128,7 +128,7 @@
                         title="Listele">
                         <i class="fas fa-list"></i>
                     </button>
-                    <a href="/urunCikisi" class="btn btn-link p-0" title="Geri Dön">
+                    <a onclick="goBack()" class="btn btn-link p-0" title="Geri Dön">
                         <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
@@ -189,6 +189,10 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
         <script>
+            function goBack() {
+                window.history.back();
+            }
+
             function toUpperCaseTurkish(str) {
                 // Normalizasyon yaparak karakterleri uygun şekilde işleyin
                 const normalizedStr = str.normalize('NFD');
