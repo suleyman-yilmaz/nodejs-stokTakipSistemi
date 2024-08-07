@@ -185,32 +185,6 @@
         .btn-link:hover {
             color: #ffffff;
         }
-
-        .fa-barcode {
-            transition: transform 0.3s ease;
-        }
-
-        .btn-link:hover .fa-barcode {
-            animation: bounce 1s infinite;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            20%,
-            50%,
-            80% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(-8px);
-            }
-
-            60% {
-                transform: translateY(-8px);
-            }
-        }
     </style>
 
 </head>
@@ -249,7 +223,7 @@
                 <span>Ürün Bilgi Girişi İşlemleri</span>
                 <div>
                     <a id="generate" class="btn btn-link p-0" title="Barkod No Oluştur">
-                        <i class="fa-solid fa-barcode"></i>
+                        <i class="fa-solid fa-barcode fa-lg"></i>
                     </a>
                 </div>
             </div>
@@ -258,7 +232,7 @@
                     <input type="hidden" id="productId">
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <input type="text" id="barcode" name="barkodno" class="form-control" placeholder="Barkod No"
+                            <input type="number" id="barcode" name="barkodno" class="form-control" placeholder="Barkod No"
                                 required>
                         </div>
                         <div class="form-group col-md-4">
@@ -386,6 +360,9 @@
                                     document.getElementById('name').value = urun.urunAdi;
                                     document.getElementById('unitOf').value = urun.birimi;
                                     document.getElementById('barcode').setAttribute('readonly', true);
+                                    const generateIcon = document.getElementById('generate');
+                                    generateIcon.style.pointerEvents = 'none';
+                                    generateIcon.style.opacity = '0.5';
                                     const addButton = document.getElementById('addButton');
                                     addButton.textContent = 'Güncelle';
                                     addButton.style.backgroundColor = '#ffc107';
@@ -471,6 +448,9 @@
                             .then(() => {
                                 document.getElementById('itemForm').removeAttribute('data-editing');
                                 document.getElementById('barcode').removeAttribute('readonly');
+                                const generateIcon = document.getElementById('generate');
+                                generateIcon.style.pointerEvents = 'auto';
+                                generateIcon.style.opacity = '1';
                                 const addButton = document.getElementById('addButton');
                                 addButton.textContent = 'Ekle';
                                 addButton.style.backgroundColor = '#007bff';
