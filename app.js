@@ -193,23 +193,6 @@ app.delete('/api/urunler/:barkodno', (req, res) => {
     });
 });
 
-
-
-
-// app.delete('/api/urunler/:barkodno', (req, res) => {
-//     const barkodno = req.params.barkodno;
-//     db.run('DELETE FROM urun WHERE barkodno = ?', barkodno, function (err) {
-//         if (err) {
-//             console.error('Veritabanı hatası:', err.message);
-//             return res.status(500).json({ error: 'Veritabanı hatası' });
-//         }
-//         if (this.changes === 0) {
-//             return res.status(404).json({ error: 'Ürün bulunamadı' });
-//         }
-//         res.json({ message: 'Ürün başarıyla silindi' });
-//     });
-// });
-
 // ürün bilgi güncelleme işlemleri
 app.put('/api/urunler/:barkodno', (req, res) => {
     const { barkodno } = req.params;
