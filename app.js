@@ -40,7 +40,7 @@ app.get('/urunCikisi', (req, res) => {
 });
 
 // Ürün bilgi giriş sayfası
-app.get('/urunBilgiGiris', (req, res) => {
+app.get('/stokKarti', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'urunBilgiGiris.html'));
 });
 
@@ -296,7 +296,6 @@ app.get('/api/urungirisi/sorgu', (req, res) => {
         res.status(400).json({ error: 'En az bir sorgu parametresi sağlanmalıdır: barcode, urunAdi, birimi' });
     }
 });
-
 
 // Çıkışı yapılan ürünler listele
 app.get('/api/urunler/cikan', (req, res) => {
