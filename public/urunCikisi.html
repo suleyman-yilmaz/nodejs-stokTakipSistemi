@@ -312,12 +312,14 @@
                             editButton.addEventListener('click', () => {
                                 document.getElementById('ubg').scrollIntoView({ behavior: 'smooth' });
                                 document.getElementById('barcode').value = urun.barkodno;
+                                document.getElementById('productName').value = urun.urunAdi;
                                 document.getElementById('quantity').value = urun.cikanMiktar;
                                 document.getElementById('price').value = urun.satisFiyati;
                                 document.getElementById('totalAmount').value = urun.toplamTutar;
                                 document.getElementById('saleDate').value = urun.cikisTarihi;
                                 document.getElementById('description').value = urun.aciklama;
                                 document.getElementById('barcode').setAttribute('readonly', true);
+                                document.getElementById('productName').setAttribute('readonly', true);
                                 const addButton = document.getElementById('addButton');
                                 addButton.textContent = 'Güncelle';
                                 addButton.style.backgroundColor = '#ffc107';
@@ -402,6 +404,7 @@
                         .then(() => {
                             document.getElementById('salesForm').removeAttribute('data-editing');
                             document.getElementById('barcode').removeAttribute('readonly');
+                            document.getElementById('productName').removeAttribute('readonly');
                             const addButton = document.getElementById('addButton');
                             addButton.textContent = 'Çıkış Yap';
                             addButton.style.backgroundColor = '#007bff';
@@ -490,21 +493,21 @@
                                 itemsContainer.appendChild(row);
                             });
                         } else {
-                            Swal.fire({
-                                icon: 'info',
-                                title: 'Ürün Bulunamadı',
-                                text: 'Girilen bilgiye ait ürün bulunamadı.',
-                            });
+                            // Swal.fire({
+                            //     icon: 'info',
+                            //     title: 'Ürün Bulunamadı',
+                            //     text: 'Girilen bilgiye ait ürün bulunamadı.',
+                            // });
                         }
                     })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Hata',
-                            text: 'Bir hata oluştu, ürün bilgisi bulunamadı.',
-                        });
-                    });
+                    // .catch(error => {
+                    //     console.error('Error:', error);
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Hata',
+                    //         text: 'Bir hata oluştu, ürün bilgisi bulunamadı.',
+                    //     });
+                    // });
             });
             document.addEventListener('DOMContentLoaded', () => {
                 loadItems();

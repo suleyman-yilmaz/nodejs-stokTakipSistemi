@@ -302,6 +302,7 @@
                                 document.getElementById('entryDate').value = urun.girisTarihi;
                                 document.getElementById('supplier').value = urun.firma;
                                 document.getElementById('barcode').setAttribute('readonly', true);
+                                document.getElementById('productName').setAttribute('readonly', true);
                                 const addButton = document.getElementById('addButton');
                                 addButton.textContent = 'Güncelle';
                                 addButton.style.backgroundColor = '#ffc107';
@@ -388,6 +389,7 @@
                         .then(() => {
                             document.getElementById('itemForm').removeAttribute('data-editing');
                             document.getElementById('barcode').removeAttribute('readonly');
+                            document.getElementById('productName').removeAttribute('readonly');
                             const addButton = document.getElementById('addButton');
                             addButton.textContent = 'Giriş Yap';
                             addButton.style.backgroundColor = '#007bff';
@@ -478,21 +480,21 @@
                                 itemsContainer.appendChild(row);
                             });
                         } else {
-                            Swal.fire({
-                                icon: 'info',
-                                title: 'Ürün Bulunamadı',
-                                text: 'Girilen bilgiye ait ürün bulunamadı.',
-                            });
+                            // Swal.fire({
+                            //     icon: 'info',
+                            //     title: 'Ürün Bulunamadı',
+                            //     text: 'Girilen bilgiye ait ürün bulunamadı.',
+                            // });
                         }
                     })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Hata',
-                            text: 'Bir hata oluştu, ürün bilgisi bulunamadı.',
-                        });
-                    });
+                    // .catch(error => {
+                    //     console.error('Error:', error);
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Hata',
+                    //         text: 'Bir hata oluştu, ürün bilgisi bulunamadı.',
+                    //     });
+                    // });
                 document.addEventListener('DOMContentLoaded', () => {
                     loadItems();
                 });
