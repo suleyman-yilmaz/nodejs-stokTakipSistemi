@@ -470,6 +470,7 @@
                                 addButton.addEventListener('click', () => {
                                     // HTML elemanlarını güncelle
                                     document.getElementById('barcode').setAttribute('readonly', true);
+                                    document.getElementById('productName').setAttribute('readonly', true);
                                     document.getElementById('barcode').value = urun.barkodno || 'Bilinmiyor';
                                     document.getElementById('productName').value = urun.urunAdi || 'Bilinmiyor';
                                     loadItems();
