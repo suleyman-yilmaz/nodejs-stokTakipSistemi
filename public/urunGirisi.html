@@ -201,6 +201,31 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
         <script>
+            function toUpperCaseTurkish(str) {
+                // Normalizasyon yaparak karakterleri uygun şekilde işleyin
+                const normalizedStr = str.normalize('NFD');
+
+                // Türkçe karakterler için özel dönüşüm
+                const turkishUpperCaseMap = {
+                    'ı': 'I', 'i': 'İ', 'ç': 'Ç', 'ş': 'Ş', 'ğ': 'Ğ', 'ö': 'Ö', 'ü': 'Ü'
+                };
+
+                let result = '';
+
+                for (const char of normalizedStr) {
+                    if (turkishUpperCaseMap[char]) {
+                        result += turkishUpperCaseMap[char];
+                    } else {
+                        result += char.toUpperCase();
+                    }
+                }
+                return result.normalize('NFC');
+            }
+
+            document.getElementById('productName').addEventListener('input', (event) => {
+                event.target.value = toUpperCaseTurkish(event.target.value)
+            });
+
             // Toplam tutarı güncelleyen fonksiyon
             function updateTotalAmount() {
                 const quantity = parseFloat(document.getElementById('quantity').value) || 0;
@@ -488,14 +513,14 @@
                             // });
                         }
                     })
-                    // .catch(error => {
-                    //     console.error('Error:', error);
-                    //     Swal.fire({
-                    //         icon: 'error',
-                    //         title: 'Hata',
-                    //         text: 'Bir hata oluştu, ürün bilgisi bulunamadı.',
-                    //     });
-                    // });
+                // .catch(error => {
+                //     console.error('Error:', error);
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Hata',
+                //         text: 'Bir hata oluştu, ürün bilgisi bulunamadı.',
+                //     });
+                // });
                 document.addEventListener('DOMContentLoaded', () => {
                     loadItems();
                 });
