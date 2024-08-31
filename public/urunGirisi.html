@@ -201,6 +201,10 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
         <script>
+            document.getElementById('addButton').addEventListener('click', ()=>{
+                document.getElementById('barcode').removeAttribute('readonly');
+                document.getElementById('productName').removeAttribute('readonly');
+            });
             function toUpperCaseTurkish(str) {
                 // Normalizasyon yaparak karakterleri uygun şekilde işleyin
                 const normalizedStr = str.normalize('NFD');
